@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@theme {
+  --color-hero-top: #2a2d2f;
+  --color-hero-mid: #242729;
+  --color-hero-bot: #212425;
+  --color-frame: #000000;
+  --color-ink: #e9e7e4;
+  --color-ink-bright: #f2f0ee;
+  --color-surface: #0c0d0e;
+  --color-surface-raised: #17181a;
+  --color-card: #131416;
+  --color-card-panel: #0e0f11;
+
+  /* acentos por card na seção de serviços */
+  --color-accent-warm: #f0863c;
+  --color-accent-cool: #4f9bf0;
+  --color-accent-mint: #74d6b4;
+
+  /* contorno da palavra gigante do footer */
+  --color-stroke: rgba(225, 222, 218, 0.3);
+  --color-stroke-glow: rgba(225, 222, 218, 0.75);
+
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-serif: Georgia, "Times New Roman", serif;
+
+  /* pulso lento da cópia que "acende" a palavra do footer */
+  --animate-breathe: breathe 7s ease-in-out infinite;
+
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.6;
+    }
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--color-frame);
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+/* Utilitários próprios via `@utility` — assim aceitam variantes (md:, hover:…). */
+
+/* Grade que sangra nas laterais: as colunas das pontas somem em fade. */
+@utility mask-fade-x {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
+}
+
+/* Hachura diagonal dos tiles vazios da grade de stack. */
+@utility bg-hatch {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.045) 0 1px,
+    transparent 1px 7px
+  );
+}
+
+/* Máscara radial do campo de hexágonos: nítido no centro, some nas bordas. */
+@utility mask-shapes-field {
+  -webkit-mask-image: radial-gradient(
+    closest-side,
+    rgba(0, 0, 0, 0.85),
+    rgba(0, 0, 0, 0.45) 42%,
+    transparent 70%
+  );
+  mask-image: radial-gradient(
+    closest-side,
+    rgba(0, 0, 0, 0.85),
+    rgba(0, 0, 0, 0.45) 42%,
+    transparent 70%
+  );
+}
