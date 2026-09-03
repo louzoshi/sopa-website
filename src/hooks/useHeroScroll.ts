@@ -7,10 +7,10 @@ const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3)
 const CLOSE_AT = 0.35
 /** Trecho em que o bloco inicial (logo/título/botões) desaparece. */
 const CONTENT_FADE = { start: 0.14, length: 0.1 }
-/** Trecho em que a narrativa atravessa o card. */
+/** Trecho em que o texto atravessa o card. */
 const STORY = { start: 0.18, length: 0.78 }
-/** Altura da faixa central em que um parágrafo fica aceso, em fração da viewport. */
-const SPOTLIGHT_BAND = 0.32
+/** Altura da faixa central em que um bloco fica aceso, em fração da viewport. */
+const SPOTLIGHT_BAND = 0.35
 
 /**
  * Todo o comportamento de scroll do hero, num único loop de animação:
@@ -18,9 +18,9 @@ const SPOTLIGHT_BAND = 0.32
  * 1. **bordas fecham** — `--p` (0→1) no track, de onde o padding e o
  *    border-radius do card derivam; com lerp, para assentar macio ao parar.
  * 2. **conteúdo inicial some** — `--hc` (1→0) logo depois que as bordas fecham.
- * 3. **narrativa atravessa** — o bloco de texto sobe de baixo para cima por
+ * 3. **texto atravessa** — o bloco de texto sobe de baixo para cima por
  *    dentro do card fixo; o feixe fica parado, daí o parallax.
- * 4. **spotlight** — cada parágrafo acende conforme se aproxima do centro da
+ * 4. **spotlight** — cada bloco acende conforme se aproxima do centro da
  *    viewport e apaga ao se afastar.
  *
  * Tudo é lido da posição de scroll a cada frame, então o efeito acompanha a
@@ -59,7 +59,7 @@ export function useHeroScroll() {
         content.style.pointerEvents = fade < 0.02 ? 'none' : ''
       }
 
-      // 3) narrativa atravessa o card
+      // 3) texto atravessa o card
       const story = storyRef.current
       if (story) {
         const storyProgress = clamp((progress - STORY.start) / STORY.length, 0, 1)
