@@ -3,6 +3,21 @@
  * Texto genérico de partida: ajuste à vontade sem tocar nos componentes.
  */
 
+/**
+ * Contato — todo botão de "entre em contato" do site sai daqui.
+ * `whatsapp` é só dígitos, no formato internacional: 55 + DDD + número.
+ */
+export const contact = {
+  // número de teste — trocar pelo da SOPA antes de publicar
+  whatsapp: '5521999123641',
+  message: 'Oi! Vim pelo site da SOPA e quero conversar sobre um projeto.',
+} as const
+
+/** Link pronto do WhatsApp, com a mensagem já digitada na conversa. */
+export const whatsappUrl = `https://wa.me/${contact.whatsapp}?text=${encodeURIComponent(
+  contact.message,
+)}`
+
 export const hero = {
   corner: [
     '// flywheel',
@@ -10,79 +25,149 @@ export const hero = {
     'dado vira decisão > decisão vira próxima ideia',
     '// e o círculo se abre',
   ],
-  title: ['Tecnologia com', 'temperatura humana'],
+  title: ['Sopa', 'Agency'],
   actions: {
-    primary: '▦ Agendar conversa',
+    primary: 'Entre em contato',
     secondary: '⇥ Ver trabalhos',
   },
   subtitle: [
     'A SOPA é um estúdio de criação e engenharia que mistura estratégia, design e código.',
     'Cada entrega alimenta a próxima.',
   ],
-  /** Narrativa que atravessa o card enquanto o hero fica preso na viewport. */
+  /** Texto único que atravessa o card enquanto o hero fica preso na viewport. */
   story: {
-    paragraphs: [
-      'Bons produtos não saem de uma disciplina só. Design sem engenharia vira maquete. Engenharia sem estratégia vira ferramenta sem dono.',
-      'Por isso juntamos tudo na mesma panela: pesquisa, marca, interface, código e infraestrutura trabalhando no mesmo ritmo, desde a primeira conversa.',
-      'Times pequenos e diretos, com quem decide sentado à mesa. Sem camadas de intermediação, sem entrega jogada por cima do muro.',
-      'O que sai daqui é feito para rodar em produção, ser medido e melhorar na semana seguinte.',
-    ],
-    cta: { label: '▦ Agendar conversa', href: '#contato' },
+    body:
+      'A SOPA é um estúdio de criação e engenharia: pesquisa, marca, interface, ' +
+      'código e infraestrutura na mesma equipe, do primeiro rascunho ao que entra ' +
+      'em produção. Times pequenos, contato direto com quem decide e entregas que ' +
+      'são medidas e melhoradas na semana seguinte.',
+    cta: { label: 'Entre em contato', href: whatsappUrl },
   },
 }
 
 export const services = {
   eyebrow: '02 — serviços',
-  title: ['Criação com método.', 'Engenharia sem atalho.'],
+  title: ['Criação com método.', 'Automação sem atalho.'],
   description:
-    'Duas frentes que andam juntas desde a primeira conversa: uma decide o que o produto é, a outra coloca ele em produção — medido e fácil de manter.',
+    'Duas frentes que andam juntas desde a primeira conversa: uma coloca seu negócio de pé na internet, a outra faz o atendimento acontecer sozinho no WhatsApp.',
+  /** Rótulos do botão que abre e fecha a lista de serviços de cada card. */
+  toggle: { open: 'Ver os serviços', close: 'Fechar' },
   cards: [
     {
       id: 'criacao',
       accent: 'warm',
       icon: 'compass',
       label: 'Criação',
-      headline: 'Marca, produto e interface que as pessoas entendem sem manual.',
+      headline: 'Site, loja e marca que explicam seu negócio sem precisar de manual.',
       bullets: [
-        { icon: 'target', lead: 'Estratégia', rest: 'de posicionamento, narrativa e identidade' },
+        { icon: 'globe', lead: 'Sites', rest: 'institucionais, landing pages e lojas' },
+        { icon: 'target', lead: 'Marca', rest: 'do posicionamento à identidade visual' },
         { icon: 'layers', lead: 'Design', rest: 'de produto, do fluxo ao design system' },
-        { icon: 'sparkle', lead: 'Protótipos', rest: 'validados antes de virar código' },
       ],
-      cta: 'Agendar conversa',
-      visual: 'chart',
+      /** Lista que aparece quando o card é aberto. */
+      services: [
+        {
+          name: 'Landing page',
+          detail:
+            'Uma página só, feita para converter: oferta, prova e um caminho claro até o contato.',
+        },
+        {
+          name: 'Site institucional',
+          detail:
+            'Quem você é, o que faz e como te encontram — no ar rápido e fácil de atualizar depois.',
+        },
+        {
+          name: 'Loja virtual',
+          detail: 'Catálogo, carrinho e checkout ligados ao seu meio de pagamento e ao estoque.',
+        },
+        {
+          name: 'Identidade visual',
+          detail: 'Logo, cores, tipografia e um manual curto para o time usar sem errar.',
+        },
+        {
+          name: 'Design de produto',
+          detail: 'Fluxo, telas e protótipo navegável validados antes de virar código.',
+        },
+      ],
+      cta: 'Entre em contato',
+      ctaIcon: 'whatsapp',
+      visual: 'works',
     },
     {
-      id: 'engenharia',
+      id: 'automacao',
       accent: 'cool',
-      icon: 'code',
-      label: 'Engenharia',
-      headline: 'Código em produção, com métrica, teste e manutenção previsível.',
+      icon: 'shuffle',
+      label: 'Automação',
+      headline: 'Seu WhatsApp respondendo, qualificando e vendendo sem você por perto.',
       bullets: [
-        { icon: 'bolt', lead: 'Front-end', rest: 'moderno, rápido e acessível' },
-        { icon: 'cube', lead: 'Back-end e infra', rest: 'integrações sem gambiarra' },
-        { icon: 'sparkle', lead: 'Web3 e IA', rest: 'aplicados quando fazem sentido' },
+        { icon: 'bolt', lead: 'Atendimento', rest: 'que responde em segundos, 24 horas' },
+        { icon: 'sparkle', lead: 'Agente de IA', rest: 'treinado no seu negócio e no seu tom' },
+        { icon: 'cube', lead: 'Integração', rest: 'com CRM, ERP e o que você já usa' },
       ],
-      cta: 'Ver como trabalhamos',
-      visual: 'stack',
+      services: [
+        {
+          name: 'Atendimento automático',
+          detail:
+            'As perguntas que mais se repetem já saem respondidas, a qualquer hora do dia.',
+        },
+        {
+          name: 'Agente de IA',
+          detail:
+            'Lê o que o cliente escreveu, responde no seu tom e chama uma pessoa quando trava.',
+        },
+        {
+          name: 'Qualificação de lead',
+          detail:
+            'A conversa faz as perguntas certas e entrega o contato pronto para o vendedor.',
+        },
+        {
+          name: 'Disparo em massa',
+          detail: 'Campanhas e avisos pela API oficial do WhatsApp, sem risco de bloqueio.',
+        },
+        {
+          name: 'Integração com seus sistemas',
+          detail: 'O que acontece na conversa cai sozinho no CRM, no ERP ou na planilha.',
+        },
+        {
+          name: 'Follow-up automático',
+          detail: 'Carrinho abandonado, lembrete de consulta, cobrança e pesquisa pós-venda.',
+        },
+      ],
+      cta: 'Entre em contato',
+      ctaIcon: 'whatsapp',
+      visual: 'integrations',
     },
   ],
-  chart: {
-    legend: [
-      { label: 'entregue', tone: 'accent' },
-      { label: 'planejado', tone: 'dim' },
-    ],
-    months: ['jan', 'mar', 'mai', 'jul', 'set', 'nov'],
-  },
-  stack: {
-    items: [
-      { monogram: 'TS', label: 'typescript' },
-      { monogram: 'RE', label: 'react' },
-      { monogram: 'NO', label: 'node' },
-      { monogram: 'PG', label: 'postgres' },
-      { monogram: 'SO', label: 'solidity' },
-      { monogram: 'FI', label: 'figma' },
-    ],
-  },
+  /**
+   * Trabalhos no ar, mostrados no card de Criação.
+   *
+   * O print é opcional: enquanto não existir, o slot aparece como placeholder
+   * hachurado com o domínio escrito. Para publicar um, salve a imagem em
+   * `src/assets/trabalhos/<slug>.png` (webp e jpg também servem) — o componente
+   * acha o arquivo pelo slug sozinho, sem precisar mexer aqui.
+   */
+  works: [
+    { slug: 'nogglesboard', name: 'Noggles Board', href: 'https://www.nogglesboard.wtf/' },
+    { slug: 'gnars', name: 'Gnars', href: 'https://gnars.com/' },
+    { slug: 'swaps', name: 'Swaps', href: 'https://www.swaps.pro/' },
+    { slug: 'slop', name: 'Slop', href: 'https://www.slop.fi/' },
+  ],
+  /**
+   * Integrações do card de Automação: ferramentas que o cliente reconhece e já
+   * usa, não a stack de quem constrói. Três por fileira — as pontas de cada
+   * fileira sangram para fora do painel, sugerindo que a lista não acaba aqui.
+   */
+  integrations: [
+    { monogram: 'WA', label: 'whatsapp' },
+    { monogram: 'IG', label: 'instagram' },
+    { monogram: 'RD', label: 'rd station' },
+    { monogram: 'HS', label: 'hubspot' },
+    { monogram: 'PD', label: 'pipedrive' },
+    { monogram: 'BL', label: 'bling' },
+    { monogram: 'OM', label: 'omie' },
+    { monogram: 'GS', label: 'planilhas' },
+    { monogram: 'GC', label: 'agenda' },
+  ],
 } as const
 
 export const faq = {
@@ -149,13 +234,16 @@ export const footer = {
     'A SOPA transforma estratégia, design e código em produtos que podem ser',
     'medidos, mantidos e melhorados com o tempo.',
   ],
-  cta: { label: '▦ Agendar conversa', href: 'mailto:oi@sopa.team' },
+  cta: { label: 'Entre em contato', href: whatsappUrl },
+  /** Links externos (href com http) abrem em outra aba; '#' fica como placeholder. */
   links: [
-    { label: 'Instagram', href: '#' },
-    { label: 'LinkedIn', href: '#' },
-    { label: 'GitHub', href: '#' },
+    // sem perfil ainda: manda pro Instagram e pronto
+    { label: 'Instagram', href: 'https://www.instagram.com/' },
+    { label: 'LinkedIn', href: 'https://www.linkedin.com/company/sopa-agency/?viewAsMember=true' },
+    { label: 'GitHub', href: 'https://github.com/sopa-agency' },
   ],
   legal: `© SOPA · ${new Date().getFullYear()}`,
+  /** '#' = ainda sem página: o rótulo aparece como texto, sem virar link. */
   policies: [
     { label: 'Termos', href: '#' },
     { label: 'Privacidade', href: '#' },

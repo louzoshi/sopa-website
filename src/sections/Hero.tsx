@@ -1,9 +1,10 @@
 import type { CSSProperties } from 'react'
 
+import { Icon } from '../components/Icon'
 import { HeroStory } from '../components/hero/HeroStory'
 import { LightBeam } from '../components/hero/LightBeam'
 import { ShapesField } from '../components/hero/ShapesField'
-import { hero } from '../data/content'
+import { hero, whatsappUrl } from '../data/content'
 import { useHeroScroll } from '../hooks/useHeroScroll'
 
 /**
@@ -23,7 +24,7 @@ export function Hero() {
   const { trackRef, contentRef, storyRef } = useHeroScroll()
 
   return (
-    <div ref={trackRef} className="relative h-[520vh] bg-frame">
+    <div ref={trackRef} className="relative h-[260vh] bg-frame">
       <div className="sticky top-0 flex h-screen items-center justify-center bg-frame">
         <div className="h-full w-full px-[calc(var(--p,0)*64px)] py-[calc(var(--p,0)*56px)]">
           <section className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-[calc(var(--p,0)*40px)] bg-linear-[180deg,var(--color-hero-top)_0%,var(--color-hero-mid)_42%,var(--color-hero-bot)_78%] px-[6vw] py-[6vh]">
@@ -58,9 +59,12 @@ export function Hero() {
 
               <div className="flex flex-wrap justify-center gap-3">
                 <a
-                  href="#contato"
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noreferrer"
                   className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-surface-raised px-5 py-3 text-sm text-ink transition-colors hover:border-white/25"
                 >
+                  <Icon name="whatsapp" className="size-4" />
                   {hero.actions.primary}
                 </a>
                 <a

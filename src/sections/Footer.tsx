@@ -1,3 +1,4 @@
+import { Icon } from '../components/Icon'
 import { LightBeam } from '../components/hero/LightBeam'
 import { footer } from '../data/content'
 
@@ -36,24 +37,44 @@ export function Footer() {
 
         <a
           href={footer.cta.href}
+          target="_blank"
+          rel="noreferrer"
           className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-white/8 bg-surface-raised px-[22px] py-3 text-sm text-ink transition-colors hover:border-white/25"
         >
+          <Icon name="whatsapp" className="size-4" />
           {footer.cta.label}
         </a>
       </div>
 
       <div className="absolute inset-x-0 bottom-[22px] z-3 flex flex-wrap justify-center gap-x-7 gap-y-2 px-6 text-[11px] uppercase tracking-[0.1em] text-ink/40">
-        {footer.links.map((link) => (
-          <a key={link.label} href={link.href} className="transition-colors hover:text-ink">
-            {link.label}
-          </a>
-        ))}
+        {footer.links.map((link) => {
+          const external = link.href.startsWith('http')
+
+          return (
+            <a
+              key={link.label}
+              href={link.href}
+              target={external ? '_blank' : undefined}
+              rel={external ? 'noreferrer' : undefined}
+              className="transition-colors hover:text-ink"
+            >
+              {link.label}
+            </a>
+          )
+        })}
         <span>{footer.legal}</span>
-        {footer.policies.map((policy) => (
-          <a key={policy.label} href={policy.href} className="transition-colors hover:text-ink">
-            {policy.label}
-          </a>
-        ))}
+        {footer.policies.map((policy) =>
+          policy.href === '#' ? (
+            // sem destino ainda: texto inerte, sem hover e sem pulo pro topo
+            <span key={policy.label} className="cursor-default">
+              {policy.label}
+            </span>
+          ) : (
+            <a key={policy.label} href={policy.href} className="transition-colors hover:text-ink">
+              {policy.label}
+            </a>
+          ),
+        )}
       </div>
     </footer>
   )
