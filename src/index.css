@@ -1,4 +1,10 @@
-@import "tailwindcss";
+/* `source(none)` desliga a detecção automática: por padrão o Tailwind varre o
+   projeto inteiro e pesca nomes de classe citados na documentação (README,
+   CLAUDE.md), injetando CSS morto no build. Aqui só o código é varrido. */
+@import "tailwindcss" source(none);
+
+@source "../index.html";
+@source "../src";
 
 @theme {
   --color-hero-top: #2a2d2f;
