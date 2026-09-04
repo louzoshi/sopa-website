@@ -22,13 +22,20 @@ import { useHeroScroll } from '../hooks/useHeroScroll'
  * o card "se solta" das bordas. Depois disso o texto começa a passar. A altura
  * do track é o ritmo da leitura: quanto mais parágrafos na narrativa, mais
  * track para o texto não sair correndo.
+ *
+ * As últimas telas do track não entram no progresso: uma de respiro, com o CTA
+ * já centralizado e nada se mexendo, e uma de cortina, em que a seção de
+ * serviços sobe por cima do hero parado. Ver `HOLD` e `CURTAIN` no
+ * `useHeroScroll` — a altura daqui é 340vh + (CURTAIN + HOLD) × 100vh, e os
+ * três números andam juntos. O `isolate` mantém as camadas do hero num
+ * empilhamento próprio, abaixo da seção que cobre.
  * Ver `useHeroScroll` para as faixas de scroll de cada etapa.
  */
 export function Hero() {
   const { trackRef, contentRef, storyRef } = useHeroScroll()
 
   return (
-    <div ref={trackRef} className="relative h-[340vh] bg-frame">
+    <div ref={trackRef} className="relative isolate h-[500vh] bg-frame">
       <div className="sticky top-0 flex h-viewport items-center justify-center bg-frame">
         <div className="h-full w-full px-[calc(var(--p,0)*16px)] py-[calc(var(--p,0)*20px)] md:px-[calc(var(--p,0)*64px)] md:py-[calc(var(--p,0)*56px)]">
           <section className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-[calc(var(--p,0)*22px)] bg-linear-[180deg,var(--color-hero-top)_0%,var(--color-hero-mid)_42%,var(--color-hero-bot)_78%] px-5 py-[6vh] md:rounded-[calc(var(--p,0)*40px)] md:px-[6vw]">

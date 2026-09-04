@@ -33,7 +33,15 @@ export function Services() {
     <section
       ref={ref}
       id="servicos"
-      className="relative bg-surface px-6 py-28 sm:px-10 md:py-40"
+      /*
+       * A seção sobe POR CIMA do hero em vez de empurrá-lo para fora: a margem
+       * negativa a faz começar uma tela antes, o `z-10` a põe na frente e o
+       * fundo opaco cobre. O hero continua preso e imóvel embaixo — a última
+       * tela do track dele existe só para isto (ver `CURTAIN` no
+       * `useHeroScroll`). A sombra para cima marca a beirada do painel, senão
+       * ele encosta no hero sem que se perceba que é uma camada.
+       */
+      className="relative z-10 -mt-[100vh] bg-surface px-6 py-28 shadow-[0_-32px_64px_-24px_rgba(0,0,0,0.85)] sm:px-10 md:py-40"
     >
       {/*
         Parallax de entrada: o cabeçalho e os cards sobem a partir de baixo em

@@ -11,6 +11,24 @@ const CONTENT_FADE = { start: 0.14, length: 0.1 }
 const STORY = { start: 0.18, length: 0.78 }
 /** Altura da faixa central em que um bloco fica aceso, em fração da viewport. */
 const SPOTLIGHT_BAND = 0.35
+/**
+ * Telas do fim do track reservadas para a seção seguinte subir por cima do
+ * hero. Ficam FORA da conta do progresso, junto com o HOLD abaixo: `--p` chega
+ * a 1 antes de qualquer uma das duas começar, e daí em diante o hero fica
+ * parado. É isso que deixa as faixas acima com o mesmo significado de sempre —
+ * mexer aqui não reescreve o tempo de nada.
+ *
+ * Quem mexer nestes dois números precisa somar o mesmo tanto na altura do
+ * track (`Hero.tsx`): ela é 340vh + (CURTAIN + HOLD) × 100vh.
+ */
+const CURTAIN = 1
+/**
+ * Respiro entre o fim da narrativa e o começo da cortina, em telas. O último
+ * bloco — o CTA — termina centralizado quando o progresso chega a 1; sem esta
+ * folga ele era coberto no mesmo instante em que assentava. Também fica fora
+ * da conta, então continua sem reescrever o tempo de nada.
+ */
+const HOLD = 0.6
 
 /**
  * Todo o comportamento de scroll do hero, num único loop de animação:
@@ -46,7 +64,7 @@ export function useHeroScroll() {
       }
 
       const rect = track.getBoundingClientRect()
-      const distance = track.offsetHeight - window.innerHeight
+      const distance = track.offsetHeight - window.innerHeight * (1 + CURTAIN + HOLD)
       const progress = distance > 0 ? clamp(-rect.top / distance, 0, 1) : 0
       const viewport = window.innerHeight
 
