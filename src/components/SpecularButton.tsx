@@ -98,6 +98,8 @@ type SpecularButtonProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
   thickness?: number
   /** varredura lenta de reserva, enquanto o ponteiro não se mexeu (rad/s) */
   speed?: number
+  /** varredura sozinha, onde não há ponteiro para seguir — celular (rad/s) */
+  autoSpeed?: number
   /** distância em px a partir da qual o brilho começa a acender */
   proximity?: number
 }
@@ -112,6 +114,7 @@ export function SpecularButton({
   shineFade = 40,
   thickness = 1,
   speed = 0.35,
+  autoSpeed = 1.1,
   proximity = 250,
   ...anchorProps
 }: SpecularButtonProps) {
@@ -119,15 +122,30 @@ export function SpecularButton({
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   // o loop lê os ajustes daqui, então trocá-los não remonta o contexto WebGL
-  const tuning = useRef({ radius, lineColor, intensity, shineSize, shineFade, thickness, speed, proximity })
+  const tuning = useRef({
+    radius, lineColor, intensity, shineSize, shineFade, thickness, speed, autoSpeed, proximity,
+  })
   useEffect(() => {
-    tuning.current = { radius, lineColor, intensity, shineSize, shineFade, thickness, speed, proximity }
+    tuning.current = {
+      radius, lineColor, intensity, shineSize, shineFade, thickness, speed, autoSpeed, proximity,
+    }
   })
 
   useEffect(() => {
     const anchor = anchorRef.current
     const canvas = canvasRef.current
     if (!anchor || !canvas) return
+
+    /**
+     * Onde há mouse a luz segue o ponteiro. Onde não há — celular, tablet — ela
+     * corre sozinha em volta do botão, senão o `pointermove` nunca chegaria e o
+     * contorno ficaria apagado a viagem inteira.
+     *
+     * Com movimento reduzido no sistema, a varredura automática não acontece:
+     * ela é a única que ninguém pediu. O botão fica com a borda de CSS.
+     */
+    const auto = !window.matchMedia('(hover: hover) and (pointer: fine)').matches
+    if (auto && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
 
     const gl = canvas.getContext('webgl2', {
       antialias: true,
@@ -154,179 +172,217 @@ export function SpecularButton({
       shaders.forEach((shader) => gl.deleteShader(shader))
       if (program) gl.deleteProgram(program)
       if (buffer) gl.deleteBuffer(buffer)
+      canvas.removeEventListener('webglcontextlost', onLost)
+      canvas.removeEventListener('webglcontextrestored', onRestored)
     }
 
-    try {
-      const compile = (type: number, src: string) => {
-        const shader = gl.createShader(type)
-        if (!shader) throw new Error('não foi possível criar o shader')
-        shaders.push(shader)
-        gl.shaderSource(shader, src)
-        gl.compileShader(shader)
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-          throw new Error(gl.getShaderInfoLog(shader) || 'shader não compilou')
-        }
-        return shader
-      }
-
-      program = gl.createProgram()
-      if (!program) throw new Error('não foi possível criar o programa')
-      gl.attachShader(program, compile(gl.VERTEX_SHADER, VERT))
-      gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FRAG))
-      gl.linkProgram(program)
-      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        throw new Error(gl.getProgramInfoLog(program) || 'programa não linkou')
-      }
-      gl.useProgram(program)
-
-      buffer = gl.createBuffer()
-      gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
-      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW)
-      const loc = gl.getAttribLocation(program, 'p')
-      gl.enableVertexAttribArray(loc)
-      gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
-
-      gl.enable(gl.BLEND)
-      gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
-
-      const uCenter = gl.getUniformLocation(program, 'uCenter')
-      const uHalfSize = gl.getUniformLocation(program, 'uHalfSize')
-      const uRadius = gl.getUniformLocation(program, 'uRadius')
-      const uAngle = gl.getUniformLocation(program, 'uAngle')
-      const uPx = gl.getUniformLocation(program, 'uPx')
-      const uLineColor = gl.getUniformLocation(program, 'uLineColor')
-      const uIntensity = gl.getUniformLocation(program, 'uIntensity')
-      const uShineSize = gl.getUniformLocation(program, 'uShineSize')
-      const uShineFade = gl.getUniformLocation(program, 'uShineFade')
-      const uThickness = gl.getUniformLocation(program, 'uThickness')
-
-      const dpr = Math.min(window.devicePixelRatio || 1, 2)
-      gl.uniform1f(uPx, dpr)
-
-      let cssW = 1
-      let cssH = 1
-
-      /**
-       * O canvas é medido pelo próprio elemento e o retângulo do botão entra
-       * por diferença: o span que segura o canvas é posicionado pela caixa de
-       * *padding* do link, então somar a folga na mão erraria pela largura da
-       * borda. `uCenter` vai em coordenadas de `gl_FragCoord` — origem embaixo.
-       */
-      const resize = () => {
-        const a = anchor.getBoundingClientRect()
-        const c = canvas.getBoundingClientRect()
-        const bufW = Math.round(c.width * dpr)
-        const bufH = Math.round(c.height * dpr)
-        if (!bufW || !bufH) return
-
-        cssW = a.width
-        cssH = a.height
-        canvas.width = bufW
-        canvas.height = bufH
-        gl.viewport(0, 0, bufW, bufH)
-        gl.uniform2f(
-          uCenter,
-          (a.left + a.width / 2 - c.left) * dpr,
-          (c.bottom - (a.top + a.height / 2)) * dpr,
-        )
-        gl.uniform2f(uHalfSize, (a.width / 2) * dpr, (a.height / 2) * dpr)
-      }
-
-      observer = new ResizeObserver(resize)
-      observer.observe(anchor)
-      resize()
-
-      let angle = 2.4
-      let idleAngle = 2.4
-      let pointerAngle: number | null = null
-      let nearness = 0
-      let bright = 0
-      let visible = true
-      let last = 0
-
-      let lastColor = ''
-      let rgb: [number, number, number] = [1, 1, 1]
-
-      const frame = (now: number) => {
-        raf = 0
-        if (!visible) return
-
-        const dt = last ? Math.min((now - last) / 1000, 0.05) : 0
-        last = now
-        const t = tuning.current
-
-        idleAngle += t.speed * dt
-        const target = pointerAngle ?? idleAngle
-        // caminho mais curto no círculo: o brilho nunca dá a volta ao contrário
-        const diff = ((target - angle + Math.PI * 3) % (Math.PI * 2)) - Math.PI
-        angle += diff * (1 - Math.exp(-dt * 7))
-        bright += (nearness - bright) * (1 - Math.exp(-dt * 8))
-
-        if (t.lineColor !== lastColor) {
-          lastColor = t.lineColor
-          rgb = toRgb(t.lineColor)
+    /**
+     * Monta shader, buffer e listeners. Chamada de novo quando o navegador
+     * devolve o contexto — o que existia antes foi invalidado junto com ele.
+     */
+    const build = () => {
+      try {
+        const compile = (type: number, src: string) => {
+          const shader = gl.createShader(type)
+          if (!shader) throw new Error('não foi possível criar o shader')
+          shaders.push(shader)
+          gl.shaderSource(shader, src)
+          gl.compileShader(shader)
+          if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            throw new Error(gl.getShaderInfoLog(shader) || 'shader não compilou')
+          }
+          return shader
         }
 
-        gl.uniform1f(uAngle, angle)
-        gl.uniform1f(uRadius, Math.min(t.radius, Math.min(cssW, cssH) / 2) * dpr)
-        gl.uniform3f(uLineColor, rgb[0], rgb[1], rgb[2])
-        gl.uniform1f(uIntensity, t.intensity * bright)
-        gl.uniform1f(uShineSize, (t.shineSize * Math.PI) / 180)
-        gl.uniform1f(uShineFade, (t.shineFade * Math.PI) / 180)
-        gl.uniform1f(uThickness, t.thickness * dpr)
-        gl.clearColor(0, 0, 0, 0)
-        gl.clear(gl.COLOR_BUFFER_BIT)
-        gl.drawArrays(gl.TRIANGLES, 0, 3)
+        program = gl.createProgram()
+        if (!program) throw new Error('não foi possível criar o programa')
+        gl.attachShader(program, compile(gl.VERTEX_SHADER, VERT))
+        gl.attachShader(program, compile(gl.FRAGMENT_SHADER, FRAG))
+        gl.linkProgram(program)
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+          throw new Error(gl.getProgramInfoLog(program) || 'programa não linkou')
+        }
+        gl.useProgram(program)
 
-        // apagado e sem ninguém por perto: para o loop até o ponteiro voltar
-        if (bright < 0.002 && nearness === 0) return
-        raf = requestAnimationFrame(frame)
-      }
+        buffer = gl.createBuffer()
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer)
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 3, -1, -1, 3]), gl.STATIC_DRAW)
+        const loc = gl.getAttribLocation(program, 'p')
+        gl.enableVertexAttribArray(loc)
+        gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0)
 
-      const start = () => {
-        if (raf || !visible) return
-        last = 0
-        raf = requestAnimationFrame(frame)
-      }
+        gl.enable(gl.BLEND)
+        gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
 
-      unsubscribe = onPointer((e) => {
-        const rect = anchor.getBoundingClientRect()
-        const cx = rect.left + rect.width / 2
-        const cy = rect.top + rect.height / 2
-        const dx = Math.max(rect.left - e.clientX, 0, e.clientX - rect.right)
-        const dy = Math.max(rect.top - e.clientY, 0, e.clientY - rect.bottom)
-        const dist = Math.hypot(dx, dy)
+        const uCenter = gl.getUniformLocation(program, 'uCenter')
+        const uHalfSize = gl.getUniformLocation(program, 'uHalfSize')
+        const uRadius = gl.getUniformLocation(program, 'uRadius')
+        const uAngle = gl.getUniformLocation(program, 'uAngle')
+        const uPx = gl.getUniformLocation(program, 'uPx')
+        const uLineColor = gl.getUniformLocation(program, 'uLineColor')
+        const uIntensity = gl.getUniformLocation(program, 'uIntensity')
+        const uShineSize = gl.getUniformLocation(program, 'uShineSize')
+        const uShineFade = gl.getUniformLocation(program, 'uShineFade')
+        const uThickness = gl.getUniformLocation(program, 'uThickness')
 
-        if (dist === 0) {
-          // por cima do botão a luz descansa na diagonal, enquadrando os cantos
-          const nx = (e.clientX - cx) / (rect.width / 2)
-          const ny = (cy - e.clientY) / (rect.height / 2)
-          pointerAngle = Math.atan2(2 / rect.height, -2 / rect.width) + nx * 0.3 + ny * 0.15
+        const dpr = Math.min(window.devicePixelRatio || 1, 2)
+        gl.uniform1f(uPx, dpr)
+
+        let cssW = 1
+        let cssH = 1
+
+        /**
+         * O canvas é medido pelo próprio elemento e o retângulo do botão entra
+         * por diferença: o span que segura o canvas é posicionado pela caixa de
+         * *padding* do link, então somar a folga na mão erraria pela largura da
+         * borda. `uCenter` vai em coordenadas de `gl_FragCoord` — origem embaixo.
+         */
+        const resize = () => {
+          const a = anchor.getBoundingClientRect()
+          const c = canvas.getBoundingClientRect()
+          const bufW = Math.round(c.width * dpr)
+          const bufH = Math.round(c.height * dpr)
+          if (!bufW || !bufH) return
+
+          cssW = a.width
+          cssH = a.height
+          canvas.width = bufW
+          canvas.height = bufH
+          gl.viewport(0, 0, bufW, bufH)
+          gl.uniform2f(
+            uCenter,
+            (a.left + a.width / 2 - c.left) * dpr,
+            (c.bottom - (a.top + a.height / 2)) * dpr,
+          )
+          gl.uniform2f(uHalfSize, (a.width / 2) * dpr, (a.height / 2) * dpr)
+        }
+
+        observer = new ResizeObserver(resize)
+        observer.observe(anchor)
+        resize()
+
+        let angle = 2.4
+        let idleAngle = 2.4
+        let pointerAngle: number | null = null
+        let nearness = 0
+        let bright = 0
+        let visible = true
+        let last = 0
+
+        let lastColor = ''
+        let rgb: [number, number, number] = [1, 1, 1]
+
+        const frame = (now: number) => {
+          raf = 0
+          if (!visible) return
+
+          const dt = last ? Math.min((now - last) / 1000, 0.05) : 0
+          last = now
+          const t = tuning.current
+
+          idleAngle += (auto ? t.autoSpeed : t.speed) * dt
+          const target = pointerAngle ?? idleAngle
+          // caminho mais curto no círculo: o brilho nunca dá a volta ao contrário
+          const diff = ((target - angle + Math.PI * 3) % (Math.PI * 2)) - Math.PI
+          angle += diff * (1 - Math.exp(-dt * 7))
+          bright += (nearness - bright) * (1 - Math.exp(-dt * 8))
+
+          if (t.lineColor !== lastColor) {
+            lastColor = t.lineColor
+            rgb = toRgb(t.lineColor)
+          }
+
+          gl.uniform1f(uAngle, angle)
+          gl.uniform1f(uRadius, Math.min(t.radius, Math.min(cssW, cssH) / 2) * dpr)
+          gl.uniform3f(uLineColor, rgb[0], rgb[1], rgb[2])
+          gl.uniform1f(uIntensity, t.intensity * bright)
+          gl.uniform1f(uShineSize, (t.shineSize * Math.PI) / 180)
+          gl.uniform1f(uShineFade, (t.shineFade * Math.PI) / 180)
+          gl.uniform1f(uThickness, t.thickness * dpr)
+          gl.clearColor(0, 0, 0, 0)
+          gl.clear(gl.COLOR_BUFFER_BIT)
+          gl.drawArrays(gl.TRIANGLES, 0, 3)
+
+          // apagado e sem ninguém por perto: para o loop até o ponteiro voltar
+          if (bright < 0.002 && nearness === 0) return
+          raf = requestAnimationFrame(frame)
+        }
+
+        const start = () => {
+          if (raf || !visible) return
+          last = 0
+          raf = requestAnimationFrame(frame)
+        }
+
+        if (auto) {
+          // acende e fica: sem ponteiro para seguir, o que muda é só o ângulo.
+          // Nada de assinar o `pointermove` aqui — no toque ele até dispara ao
+          // arrastar a tela, e o brilho ficaria preso no ângulo do dedo.
+          nearness = 1
         } else {
-          pointerAngle = Math.atan2(cy - e.clientY, e.clientX - cx)
+          unsubscribe = onPointer((e) => {
+            const rect = anchor.getBoundingClientRect()
+            const cx = rect.left + rect.width / 2
+            const cy = rect.top + rect.height / 2
+            const dx = Math.max(rect.left - e.clientX, 0, e.clientX - rect.right)
+            const dy = Math.max(rect.top - e.clientY, 0, e.clientY - rect.bottom)
+            const dist = Math.hypot(dx, dy)
+
+            if (dist === 0) {
+              // por cima do botão a luz descansa na diagonal, enquadrando os cantos
+              const nx = (e.clientX - cx) / (rect.width / 2)
+              const ny = (cy - e.clientY) / (rect.height / 2)
+              pointerAngle = Math.atan2(2 / rect.height, -2 / rect.width) + nx * 0.3 + ny * 0.15
+            } else {
+              pointerAngle = Math.atan2(cy - e.clientY, e.clientX - cx)
+            }
+
+            const t = Math.max(0, 1 - dist / Math.max(tuning.current.proximity, 1))
+            nearness = t * t * (3 - 2 * t)
+            start()
+          })
         }
 
-        const t = Math.max(0, 1 - dist / Math.max(tuning.current.proximity, 1))
-        nearness = t * t * (3 - 2 * t)
-        start()
-      })
+        /** Fora da tela não desenha — o botão do rodapé não gasta GPU no hero. */
+        viewport = new IntersectionObserver(
+          ([entry]) => {
+            visible = entry.isIntersecting
+            if (visible) start()
+          },
+          { rootMargin: '120px' },
+        )
+        viewport.observe(anchor)
 
-      /** Fora da tela não desenha — o botão do rodapé não gasta GPU no hero. */
-      viewport = new IntersectionObserver(
-        ([entry]) => {
-          visible = entry.isIntersecting
-          if (visible) start()
-        },
-        { rootMargin: '120px' },
-      )
-      viewport.observe(anchor)
-
-      raf = requestAnimationFrame(frame)
-    } catch (error) {
-      console.warn('Contorno especular desativado:', error)
-      dispose()
-      return
+        raf = requestAnimationFrame(frame)
+      } catch (error) {
+        console.warn('Contorno especular desativado:', error)
+        dispose()
+      }
     }
+
+    /** A aba em segundo plano perde a memória de vídeo; sem isto o contorno
+     *  não voltaria mais. `preventDefault` autoriza o navegador a devolver. */
+    const onLost = (event: Event) => {
+      event.preventDefault()
+      cancelAnimationFrame(raf)
+      raf = 0
+      observer?.disconnect()
+      viewport?.disconnect()
+      unsubscribe?.()
+      unsubscribe = null
+    }
+
+    const onRestored = () => {
+      shaders.length = 0
+      program = null
+      buffer = null
+      build()
+    }
+
+    canvas.addEventListener('webglcontextlost', onLost)
+    canvas.addEventListener('webglcontextrestored', onRestored)
+
+    build()
 
     return dispose
   }, [])
