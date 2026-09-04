@@ -98,6 +98,29 @@
   mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
 }
 
+/* Véu escuro atrás de um bloco de texto, para ele aguentar o feixe de luz
+   passando por trás sem perder contraste.
+
+   É um retângulo cheio, arredondado e desfocado — não um gradiente radial. A
+   elipse perdia força justamente onde o texto mais precisa: no fim das linhas
+   e na primeira e na última, que caem perto da borda do gradiente e recebiam
+   quase nada. Assim o miolo tem opacidade constante sob todo o texto e só as
+   beiradas se dissolvem, sem aresta para o olho pegar. Fica no ::before. */
+@utility text-halo {
+  position: relative;
+  isolation: isolate;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1rem -1.5rem;
+    z-index: -1;
+    border-radius: 1.75rem;
+    background: rgba(0, 0, 0, 0.62);
+    filter: blur(20px);
+  }
+}
+
 /* Hachura diagonal dos tiles vazios da grade de stack. */
 @utility bg-hatch {
   background-image: repeating-linear-gradient(
