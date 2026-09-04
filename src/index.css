@@ -31,6 +31,10 @@
   --color-accent-cool: #4f9bf0;
   --color-accent-mint: #74d6b4;
 
+  /* segunda linha do H1: escura o bastante para virar recorte quando o feixe
+     passa por trás, com croma suficiente para não ler como preto sujo */
+  --color-wine: #5e1a2e;
+
   /* contorno da palavra gigante do footer */
   --color-stroke: rgba(225, 222, 218, 0.3);
   --color-stroke-glow: rgba(225, 222, 218, 0.75);

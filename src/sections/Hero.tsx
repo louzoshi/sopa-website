@@ -55,7 +55,10 @@ export function Hero() {
 
               <h1 className="mb-[34px] font-display text-[clamp(38px,7vw,88px)] font-medium leading-[1.02] tracking-[-0.01em] text-ink-bright">
                 {hero.title.map((line) => (
-                  <span key={line} className="block">
+                  <span
+                    key={line}
+                    className={`block ${line === hero.knockout ? 'text-wine' : ''}`}
+                  >
                     {line}
                   </span>
                 ))}

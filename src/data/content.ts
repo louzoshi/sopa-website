@@ -26,6 +26,9 @@ export const hero = {
     '// e o círculo se abre',
   ],
   title: ['Sopa', 'Agency'],
+  /** Linha do título que vai em preto: o feixe de luz passa por trás dela e a
+   *  palavra só se revela quando a luz cruza aquela altura. */
+  knockout: 'Agency',
   actions: {
     primary: 'Entre em contato',
     secondary: '⇥ Ver trabalhos',
