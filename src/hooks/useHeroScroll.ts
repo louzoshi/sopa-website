@@ -37,8 +37,14 @@ export function useHeroScroll() {
 
     let closeCurrent = 0
     let raf = 0
+    let visible = true
 
     const tick = () => {
+      if (!visible) {
+        raf = 0
+        return
+      }
+
       const rect = track.getBoundingClientRect()
       const distance = track.offsetHeight - window.innerHeight
       const progress = distance > 0 ? clamp(-rect.top / distance, 0, 1) : 0
@@ -91,7 +97,22 @@ export function useHeroScroll() {
     }
     raf = requestAnimationFrame(tick)
 
-    return () => cancelAnimationFrame(raf)
+    /** Com o hero fora da tela não há o que recalcular — e este loop lê o
+     *  layout a cada frame, para o bloco e para cada parágrafo. Ao voltar, o
+     *  primeiro tick refaz tudo a partir da posição de scroll atual. */
+    const visibility = new IntersectionObserver(
+      ([entry]) => {
+        visible = entry.isIntersecting
+        if (visible && !raf) raf = requestAnimationFrame(tick)
+      },
+      { rootMargin: '120px' },
+    )
+    visibility.observe(track)
+
+    return () => {
+      cancelAnimationFrame(raf)
+      visibility.disconnect()
+    }
   }, [])
 
   return { trackRef, contentRef, storyRef }
