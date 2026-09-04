@@ -31,16 +31,28 @@ export const hero = {
     secondary: '⇥ Ver trabalhos',
   },
   subtitle: [
-    'A SOPA é um estúdio de criação e engenharia que mistura estratégia, design e código.',
-    'Cada entrega alimenta a próxima.',
+    'Agência de criação e tecnologia: estratégia, design, marketing e engenharia na mesma equipe.',
+    'Gostamos de mostrar antes de explicar.',
   ],
-  /** Texto único que atravessa o card enquanto o hero fica preso na viewport. */
+  /**
+   * Texto que atravessa o card enquanto o hero fica preso na viewport.
+   * Cada parágrafo é um bloco que acende sozinho ao passar pelo centro da
+   * tela — mexer na quantidade muda o ritmo da leitura e pede um ajuste na
+   * altura do track em `Hero.tsx`.
+   */
   story: {
-    body:
-      'A SOPA é um estúdio de criação e engenharia: pesquisa, marca, interface, ' +
-      'código e infraestrutura na mesma equipe, do primeiro rascunho ao que entra ' +
-      'em produção. Times pequenos, contato direto com quem decide e entregas que ' +
-      'são medidas e melhoradas na semana seguinte.',
+    paragraphs: [
+      'A SOPA é uma agência de criação e tecnologia que atende dentro e fora do ' +
+        'Brasil. Estratégia, design, marketing e engenharia na mesma equipe, para ' +
+        'transformar ideia em produto de verdade — rápido.',
+      'Gostamos de mostrar antes de explicar. Quase sempre o primeiro contato já ' +
+        'chega com um preview ou uma demo funcionando.',
+      'Sites, marcas, imagens, automações e sistemas sob medida, para quem está ' +
+        'começando e para quem já está rodando. Equipe enxuta e ferramenta de ponta: ' +
+        'da ideia a algo testável em poucas horas, e muitos projetos entregues no ' +
+        'mesmo dia.',
+      'Menos reunião sobre o que poderia ser feito. Mais coisa pronta para experimentar.',
+    ],
     cta: { label: 'Entre em contato', href: whatsappUrl },
   },
 }
@@ -231,9 +243,11 @@ export const footer = {
   /** Palavra gigante em contorno, ancorada no rodapé. */
   wordmark: 'SOPA',
   title: ['Bom trabalho', 'continua rendendo'],
+  /** Quebras de linha na mão: cada item é uma linha do bloco centralizado. */
   lede: [
-    'A SOPA transforma estratégia, design e código em produtos que podem ser',
-    'medidos, mantidos e melhorados com o tempo.',
+    'A entrega não termina no lançamento. Criamos produtos, marcas e',
+    'sistemas feitos para continuar funcionando, evoluindo e gerando',
+    'resultado muito depois que entram no ar.',
   ],
   cta: { label: 'Entre em contato', href: whatsappUrl },
   /** Links externos (href com http) abrem em outra aba; '#' fica como placeholder. */
@@ -241,12 +255,7 @@ export const footer = {
     // sem perfil ainda: manda pro Instagram e pronto
     { label: 'Instagram', href: 'https://www.instagram.com/' },
     { label: 'LinkedIn', href: 'https://www.linkedin.com/company/sopa-agency/?viewAsMember=true' },
-    { label: 'GitHub', href: 'https://github.com/sopa-agency' },
+    { label: 'X', href: 'https://x.com/sopa_agency' },
   ],
   legal: `© SOPA · ${new Date().getFullYear()}`,
-  /** '#' = ainda sem página: o rótulo aparece como texto, sem virar link. */
-  policies: [
-    { label: 'Termos', href: '#' },
-    { label: 'Privacidade', href: '#' },
-  ],
 } as const

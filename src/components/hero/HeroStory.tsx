@@ -5,12 +5,13 @@ import { SpecularButton } from '../SpecularButton'
 import { hero } from '../../data/content'
 
 /**
- * Texto único que atravessa o card do hero enquanto ele fica preso na viewport.
+ * Texto que atravessa o card do hero enquanto ele fica preso na viewport.
  *
  * O bloco é posicionado em absoluto e o `useHeroScroll` reescreve o `transform`
  * a cada frame — o feixe fica parado e o texto passa por cima, daí o parallax.
  * A opacidade de cada filho também vem do hook (acende no centro da tela), por
- * isso todos começam invisíveis.
+ * isso todos começam invisíveis: cada parágrafo é um filho e acende na sua vez.
+ * A capitular fica só no primeiro, que é onde o texto começa.
  *
  * Sem utilitário de translate aqui: no Tailwind v4 eles usam a propriedade
  * `translate`, que compõe com o `transform` inline em vez de substituí-lo — o
@@ -23,9 +24,18 @@ export function HeroStory({ ref }: { ref: Ref<HTMLDivElement> }) {
       className="absolute left-1/2 top-1/2 z-2 w-[min(620px,82%)] text-left will-change-transform"
       style={{ transform: 'translate(-50%, 50vh)' }}
     >
-      <p className="mb-[8vh] font-serif text-[clamp(17px,2.2vw,21px)] leading-[1.6] text-ink opacity-0 will-change-[opacity] first-letter:float-left first-letter:pt-1.5 first-letter:pr-2.5 first-letter:text-[3.4em] first-letter:leading-[0.8] first-letter:text-ink-bright">
-        {hero.story.body}
-      </p>
+      {hero.story.paragraphs.map((text, i) => (
+        <p
+          key={text}
+          className={`mb-[6vh] font-serif text-[clamp(17px,2.2vw,21px)] leading-[1.6] text-ink opacity-0 will-change-[opacity] ${
+            i === 0
+              ? 'first-letter:float-left first-letter:pt-1.5 first-letter:pr-2.5 first-letter:text-[3.4em] first-letter:leading-[0.8] first-letter:text-ink-bright'
+              : ''
+          }`}
+        >
+          {text}
+        </p>
+      ))}
 
       <div className="text-center opacity-0">
         <SpecularButton

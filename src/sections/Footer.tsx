@@ -64,18 +64,6 @@ export function Footer() {
           )
         })}
         <span>{footer.legal}</span>
-        {footer.policies.map((policy) =>
-          policy.href === '#' ? (
-            // sem destino ainda: texto inerte, sem hover e sem pulo pro topo
-            <span key={policy.label} className="cursor-default">
-              {policy.label}
-            </span>
-          ) : (
-            <a key={policy.label} href={policy.href} className="transition-colors hover:text-ink">
-              {policy.label}
-            </a>
-          ),
-        )}
       </div>
     </footer>
   )

@@ -18,14 +18,16 @@ import { useHeroScroll } from '../hooks/useHeroScroll'
  *
  * O track alto + sticky dão a distância de scroll: conforme `--p` vai de 0 a 1
  * o padding cresce e os cantos arredondam, o preto do fundo aparece por trás e
- * o card "se solta" das bordas. Depois disso o texto começa a passar.
+ * o card "se solta" das bordas. Depois disso o texto começa a passar. A altura
+ * do track é o ritmo da leitura: quanto mais parágrafos na narrativa, mais
+ * track para o texto não sair correndo.
  * Ver `useHeroScroll` para as faixas de scroll de cada etapa.
  */
 export function Hero() {
   const { trackRef, contentRef, storyRef } = useHeroScroll()
 
   return (
-    <div ref={trackRef} className="relative h-[260vh] bg-frame">
+    <div ref={trackRef} className="relative h-[340vh] bg-frame">
       <div className="sticky top-0 flex h-screen items-center justify-center bg-frame">
         <div className="h-full w-full px-[calc(var(--p,0)*64px)] py-[calc(var(--p,0)*56px)]">
           <section className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-[calc(var(--p,0)*40px)] bg-linear-[180deg,var(--color-hero-top)_0%,var(--color-hero-mid)_42%,var(--color-hero-bot)_78%] px-[6vw] py-[6vh]">
