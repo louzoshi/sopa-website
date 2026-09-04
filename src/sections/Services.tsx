@@ -6,6 +6,7 @@ import { SpecularButton } from '../components/SpecularButton'
 import { IntegrationGrid } from '../components/services/IntegrationGrid'
 import { WorkGrid } from '../components/services/WorkGrid'
 import { services, whatsappUrl } from '../data/content'
+import { useEnterProgress } from '../hooks/useEnterProgress'
 
 const ACCENTS = {
   warm: 'var(--color-accent-warm)',
@@ -26,17 +27,41 @@ type Card = (typeof services.cards)[number]
  * propósito: sem isso o card fechado esticaria junto com o vizinho aberto.
  */
 export function Services() {
-  return (
-    <section id="servicos" className="relative bg-surface px-6 py-28 sm:px-10 md:py-40">
-      <div className="mx-auto max-w-6xl">
-        <SectionHeading
-          eyebrow={services.eyebrow}
-          title={services.title}
-          description={services.description}
-          align="center"
-        />
+  const ref = useEnterProgress()
 
-        <div className="mt-20 grid gap-6 lg:grid-cols-2 lg:items-start">
+  return (
+    <section
+      ref={ref}
+      id="servicos"
+      className="relative bg-surface px-6 py-28 sm:px-10 md:py-40"
+    >
+      {/*
+        Parallax de entrada: o cabeçalho e os cards sobem a partir de baixo em
+        velocidades diferentes — 40px contra 96px — enquanto `--enter` vai de 0
+        a 1. É a diferença entre os dois que dá profundidade; com um valor só,
+        a seção inteira apenas deslizaria. O hero e o feixe não sabem que isto
+        existe: o efeito começa e termina dentro desta seção.
+      */}
+      <div className="mx-auto max-w-6xl">
+        <div
+          className="will-change-transform"
+          style={{ transform: 'translate3d(0, calc((1 - var(--enter, 1)) * 40px), 0)' }}
+        >
+          <SectionHeading
+            eyebrow={services.eyebrow}
+            title={services.title}
+            description={services.description}
+            align="center"
+          />
+        </div>
+
+        <div
+          className="mt-20 grid gap-6 will-change-transform lg:grid-cols-2 lg:items-start"
+          style={{
+            transform: 'translate3d(0, calc((1 - var(--enter, 1)) * 96px), 0)',
+            opacity: 'calc(0.35 + 0.65 * var(--enter, 1))',
+          }}
+        >
           {services.cards.map((card) => (
             <ServiceCard key={card.id} card={card} />
           ))}
