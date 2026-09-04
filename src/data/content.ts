@@ -59,10 +59,10 @@ export const hero = {
 }
 
 export const services = {
-  eyebrow: '02 — serviços',
-  title: ['Criação com método.', 'Automação sem atalho.'],
+  eyebrow: 'serviços',
+  title: ['Criação com método.', 'Automação que trabalha.'],
   description:
-    'Duas frentes que andam juntas desde a primeira conversa: uma coloca seu negócio de pé na internet, a outra faz o atendimento acontecer sozinho no WhatsApp.',
+    'Da presença digital à operação do dia a dia, criamos sites, sistemas e automações que colocam ideias no ar e trabalho no automático.',
   /** Rótulos do botão que abre e fecha a lista de serviços de cada card. */
   toggle: { open: 'Ver os serviços', close: 'Fechar' },
   cards: [
