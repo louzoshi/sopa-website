@@ -98,6 +98,13 @@ void main(){
   float n = hash(gl_FragCoord.xy + t*60.0);
   col += (n - 0.5) * 0.025;
 
+  // --- BORDAS de cima e de baixo somem ---
+  // A nevoa larga e o grao pintam o quadro INTEIRO, com alpha baixo mas nao
+  // nulo. Sem este esmaecimento a faixa acaba num corte reto na altura em que
+  // o canvas termina, e a linha atravessa o hero de ponta a ponta parecendo
+  // uma barra. O feixe mora no meio do quadro, entao nada dele se perde aqui.
+  col *= smoothstep(0.0, 0.16, uv.y) * smoothstep(0.0, 0.16, 1.0 - uv.y);
+
   // intensidade -> alpha (compoe sobre o hero escuro)
   float a = clamp(max(max(col.r,col.g),col.b), 0.0, 1.0);
   a = pow(a, 0.85);
