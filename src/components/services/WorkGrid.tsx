@@ -1,28 +1,39 @@
+import { useEffect, useRef } from 'react'
+
 import { services } from '../../data/content'
 
 /**
  * Grade de trabalhos do card de Criação: quatro sites no ar, cada um abrindo
  * em outra aba.
  *
- * O print é resolvido por `slug`, não por caminho escrito à mão: o glob abaixo
- * varre `src/assets/trabalhos` em build time e casa `<slug>.<ext>`. Quem ainda
- * não tem arquivo cai no placeholder hachurado — assim dá para publicar um
- * print de cada vez só soltando a imagem na pasta.
+ * O arquivo é resolvido por `slug`, não por caminho escrito à mão: os globs
+ * abaixo varrem `src/assets/trabalhos` em build time e casam `<slug>.<ext>`.
+ * Havendo um `.mp4`, o trabalho aparece em movimento, com a imagem de mesmo
+ * slug servindo de cartaz; havendo só imagem, ela fica parada; não havendo
+ * nada, sobra o placeholder hachurado. Publicar um trabalho continua sendo
+ * soltar arquivo na pasta.
  */
-const SHOTS = import.meta.glob('../../assets/trabalhos/*.{png,jpg,jpeg,webp,avif}', {
+const CLIPS = import.meta.glob('../../assets/trabalhos/*.mp4', {
   eager: true,
   import: 'default',
   query: '?url',
 }) as Record<string, string>
 
-const shotFor = (slug: string) =>
-  Object.entries(SHOTS).find(([path]) => path.includes(`/${slug}.`))?.[1]
+const SHOTS = import.meta.glob('../../assets/trabalhos/*.{png,jpg,jpeg,webp,avif,gif}', {
+  eager: true,
+  import: 'default',
+  query: '?url',
+}) as Record<string, string>
+
+const bySlug = (files: Record<string, string>, slug: string) =>
+  Object.entries(files).find(([path]) => path.includes(`/${slug}.`))?.[1]
 
 export function WorkGrid() {
   return (
     <div className="grid grid-cols-2 gap-3 p-4">
       {services.works.map((work) => {
-        const shot = shotFor(work.slug)
+        const clip = bySlug(CLIPS, work.slug)
+        const shot = bySlug(SHOTS, work.slug)
 
         return (
           <a
@@ -33,10 +44,12 @@ export function WorkGrid() {
             className="group block"
           >
             <div className="aspect-16/10 overflow-hidden rounded-lg border border-white/6 bg-white/2 transition-colors group-hover:border-(--accent)/40">
-              {shot ? (
+              {clip ? (
+                <Clip src={clip} poster={shot} name={work.name} />
+              ) : shot ? (
                 <img
                   src={shot}
-                  alt={`Print do site ${work.name}`}
+                  alt={`Site ${work.name}`}
                   loading="lazy"
                   className="size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
                 />
@@ -57,5 +70,49 @@ export function WorkGrid() {
         )
       })}
     </div>
+  )
+}
+
+/**
+ * Clipe do trabalho: sem som, em laço e sem controles — é ilustração, não
+ * vídeo para assistir.
+ *
+ * `preload="none"` mais o observer fazem as vezes do `loading="lazy"`, que não
+ * existe em vídeo: o arquivo só começa a baixar quando o trabalho chega perto
+ * da tela, e pausa ao sair. Com movimento reduzido no sistema, nada toca e o
+ * cartaz fica no lugar — a imagem parada do primeiro quadro.
+ */
+function Clip({ src, poster, name }: { src: string; poster?: string; name: string }) {
+  const ref = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const video = ref.current
+    if (!video) return
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const visibility = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) void video.play().catch(() => {})
+        else video.pause()
+      },
+      { rootMargin: '200px' },
+    )
+    visibility.observe(video)
+
+    return () => visibility.disconnect()
+  }, [])
+
+  return (
+    <video
+      ref={ref}
+      src={src}
+      poster={poster}
+      muted
+      loop
+      playsInline
+      preload="none"
+      aria-label={`Site ${name} em movimento`}
+      className="size-full object-cover object-top transition-transform duration-500 group-hover:scale-[1.03]"
+    />
   )
 }
