@@ -76,6 +76,18 @@
 
 /* Utilitários próprios via `@utility` — assim aceitam variantes (md:, hover:…). */
 
+/* Altura da janela como ela está AGORA, com a barra do navegador ocupando o
+   que ocupa. `100vh` no celular mede a tela sem a barra e não muda nunca, mas
+   o `useHeroScroll` faz a conta com `window.innerHeight`, que é o valor
+   dinâmico — com os dois discordando, o card nascia mais alto que a tela e o
+   texto passava fora do centro. `dvh` é o mesmo número que o JS lê.
+   O `vh` fica de reserva para navegador sem `dvh` — o minificador descarta a
+   linha sozinho quando todos os alvos do build já suportam a unidade. */
+@utility h-viewport {
+  height: 100vh;
+  height: 100dvh;
+}
+
 /* Grade que sangra nas laterais: as colunas das pontas somem em fade. */
 @utility mask-fade-x {
   -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);

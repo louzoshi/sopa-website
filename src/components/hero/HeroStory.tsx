@@ -21,7 +21,7 @@ export function HeroStory({ ref }: { ref: Ref<HTMLDivElement> }) {
   return (
     <div
       ref={ref}
-      className="absolute left-1/2 top-1/2 z-2 w-[min(620px,82%)] text-left will-change-transform"
+      className="absolute left-1/2 top-1/2 z-2 w-[min(620px,88%)] text-left will-change-transform md:w-[min(620px,82%)]"
       style={{ transform: 'translate(-50%, 50vh)' }}
     >
       {hero.story.paragraphs.map((text, i) => (
