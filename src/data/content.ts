@@ -30,10 +30,8 @@ export const hero = {
     primary: 'Entre em contato',
     secondary: '⇥ Ver trabalhos',
   },
-  subtitle: [
-    'Agência de criação e tecnologia: estratégia, design, marketing e engenharia na mesma equipe.',
-    'Gostamos de mostrar antes de explicar.',
-  ],
+  /** Uma linha por item — hoje é uma só, logo abaixo dos botões. */
+  subtitle: ['Criação e Tecnologia'],
   /**
    * Texto que atravessa o card enquanto o hero fica preso na viewport.
    * Cada parágrafo é um bloco que acende sozinho ao passar pelo centro da

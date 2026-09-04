@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 
 import { Icon } from '../components/Icon'
+import { ScrambleText } from '../components/ScrambleText'
 import { SpecularButton } from '../components/SpecularButton'
 import { HeroStory } from '../components/hero/HeroStory'
 import { LightBeam } from '../components/hero/LightBeam'
@@ -78,11 +79,12 @@ export function Hero() {
                 </a>
               </div>
 
-              <p className="mt-[34px] text-sm leading-relaxed text-ink/55">
+              {/* mono aqui não é estilo à toa: o texto se remonta sozinho e, em
+                  fonte proporcional, cada letra sorteada teria uma largura,
+                  fazendo a linha balançar a cada frame */}
+              <p className="mt-[34px] font-mono text-sm leading-relaxed tracking-[0.06em] text-ink/55">
                 {hero.subtitle.map((line) => (
-                  <span key={line} className="block">
-                    {line}
-                  </span>
+                  <ScrambleText key={line} text={line} className="block" />
                 ))}
               </p>
             </div>
