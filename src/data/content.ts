@@ -173,25 +173,26 @@ export const services = {
 export const faq = {
   eyebrow: 'faq',
   title: ['Perguntas', 'frequentes'],
-  description: 'Respostas rápidas sobre escopo, prazo, custo e o que acontece depois do lançamento.',
+  description:
+    'O que costumam perguntar antes de fechar: como começa, quanto tempo leva, como é o contrato e quem toca o projeto depois que ele entra no ar.',
   items: [
     {
       icon: 'compass',
       question: 'Como começa um projeto com a SOPA?',
       answer:
-        'Começa com uma conversa de mais ou menos uma hora para entender contexto, prazo e orçamento. Em seguida enviamos uma proposta com escopo, etapas e valores. Aprovada a proposta, o time entra na semana seguinte.',
+        'Começa com uma conversa de mais ou menos 20 minutos para apresentar o preview do projeto e alinhar prazo e orçamento. Aprovada a proposta, o time produz o que falta e envia o projeto no mesmo dia.',
     },
     {
       icon: 'clock',
       question: 'Quanto tempo leva uma entrega?',
       answer:
-        'Um site institucional costuma levar de 4 a 6 semanas. Produtos digitais mais completos ficam entre 3 e 6 meses, divididos em ciclos curtos com entregas visíveis a cada duas semanas.',
+        'Um site institucional costuma levar algumas horas. Produtos digitais mais robustos ficam prontos em até um dia, sempre a partir do preview aprovado na conversa inicial.',
     },
     {
       icon: 'doc',
-      question: 'Vocês trabalham com projeto fechado ou por retainer?',
+      question: 'Dá para contratar por projeto ou o time fica comigo todo mês?',
       answer:
-        'Os dois. Projetos com escopo bem definido saem por valor fechado. Quando a demanda é contínua, um retainer mensal com time dedicado costuma sair mais barato e mais rápido.',
+        'Os dois. Escopo definido sai por valor fechado, entregue de uma vez. Quando a demanda é contínua, existe um plano mensal com time à disposição — você manda a prioridade da semana e ela entra na fila.',
     },
     {
       icon: 'sparkle',
@@ -215,13 +216,13 @@ export const faq = {
       icon: 'users',
       question: 'Como funciona o dia a dia com o time de vocês?',
       answer:
-        'Um canal direto no Slack ou WhatsApp, uma call semanal de acompanhamento e um board público com o que está em andamento. Sem intermediário entre quem decide e quem executa.',
+        'Um canal direto no WhatsApp para o dia a dia e uma call no Google Meet a cada entrega, para alinhar prioridades e mostrar o que já está de pé. Sem intermediário entre quem decide e quem executa.',
     },
     {
       icon: 'cube',
       question: 'Vocês assumem projeto que já está no meio do caminho?',
       answer:
-        'Sim. Começamos com uma leitura do código e do design existentes, apontamos o que dá para aproveitar e o que precisa ser refeito, e só então propomos um plano.',
+        'Sim. Começamos com uma leitura do código e do design que já existem e alinhamos com você o que está e o que não está de acordo. Daí sai um plano claro: o que dá para aproveitar, o que precisa ser refeito e um prazo tão curto quanto o de um projeto começado do zero.',
     },
   ],
 } as const
