@@ -37,7 +37,9 @@ export function HeroStory({ ref }: { ref: Ref<HTMLDivElement> }) {
         </p>
       ))}
 
-      <div className="text-center opacity-0">
+      {/* margem própria: o que separa o botão do último parágrafo não pode ser
+          o mesmo respiro que separa um parágrafo do outro */}
+      <div className="mt-[6vh] text-center opacity-0">
         <SpecularButton
           href={hero.story.cta.href}
           target="_blank"
