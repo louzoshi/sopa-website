@@ -1,6 +1,6 @@
 import { useState, type CSSProperties } from 'react'
 
-import { Icon, type IconName } from '../components/Icon'
+import { Icon } from '../components/Icon'
 import { SectionHeading } from '../components/SectionHeading'
 import { SpecularButton } from '../components/SpecularButton'
 import { IntegrationGrid } from '../components/services/IntegrationGrid'
@@ -71,39 +71,19 @@ function ServiceCard({ card }: { card: Card }) {
           aria-controls={panelId}
           className="group cursor-pointer text-left"
         >
-          <span className="flex items-start justify-between gap-4">
-            <span className="flex size-9 items-center justify-center rounded-lg bg-(--accent)/12 text-(--accent)">
-              <Icon name={card.icon as IconName} className="size-[18px]" />
-            </span>
-            <Icon
-              name="chevron"
-              className={`mt-2 size-4 shrink-0 text-ink/35 transition-transform duration-300 group-hover:text-ink/60 ${
-                isOpen ? 'rotate-180' : ''
-              }`}
-            />
-          </span>
-
-          <h3 className="mt-6 text-lg text-(--accent)">{card.label}</h3>
-          <p className="mt-2 max-w-sm font-serif text-[clamp(19px,2vw,24px)] leading-[1.25] text-ink-bright">
+          <h3 className="text-lg text-(--accent)">{card.label}</h3>
+          <p className="mt-2 mb-1 max-w-sm font-serif text-[clamp(19px,2vw,24px)] leading-[1.25] text-ink-bright">
             {card.headline}
           </p>
 
-          <ul className="mt-7 space-y-3">
-            {card.bullets.map((bullet) => (
-              <li key={bullet.lead} className="flex items-start gap-3 text-[13px] leading-relaxed">
-                <Icon
-                  name={bullet.icon as IconName}
-                  className="mt-px size-3.5 shrink-0 text-(--accent)/80"
-                />
-                <span className="text-ink/40">
-                  <span className="font-semibold text-ink/85">{bullet.lead}</span> {bullet.rest}
-                </span>
-              </li>
-            ))}
-          </ul>
-
-          <span className="mt-6 inline-block text-[12px] uppercase tracking-[0.1em] text-ink/35 transition-colors group-hover:text-(--accent)">
+          {/* o chevron anda junto do rótulo que descreve a ação: separados,
+              cada um dizia metade da mesma coisa */}
+          <span className="mt-6 inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.1em] text-ink/35 transition-colors group-hover:text-(--accent)">
             {isOpen ? services.toggle.close : services.toggle.open}
+            <Icon
+              name="chevron"
+              className={`size-3.5 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
+            />
           </span>
         </button>
 

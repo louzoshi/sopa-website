@@ -71,35 +71,16 @@ export const services = {
       accent: 'warm',
       icon: 'compass',
       label: 'Criação',
-      headline: 'Site, loja e marca que explicam seu negócio sem precisar de manual.',
-      bullets: [
-        { icon: 'globe', lead: 'Sites', rest: 'institucionais, landing pages e lojas' },
-        { icon: 'target', lead: 'Marca', rest: 'do posicionamento à identidade visual' },
-        { icon: 'layers', lead: 'Design', rest: 'de produto, do fluxo ao design system' },
-      ],
-      /** Lista que aparece quando o card é aberto. */
+      headline:
+        'Sites, marcas e produtos digitais que deixam seu negócio claro, bonito e pronto para crescer.',
       services: [
-        {
-          name: 'Landing page',
-          detail:
-            'Uma página só, feita para converter: oferta, prova e um caminho claro até o contato.',
-        },
-        {
-          name: 'Site institucional',
-          detail:
-            'Quem você é, o que faz e como te encontram — no ar rápido e fácil de atualizar depois.',
-        },
-        {
-          name: 'Loja virtual',
-          detail: 'Catálogo, carrinho e checkout ligados ao seu meio de pagamento e ao estoque.',
-        },
-        {
-          name: 'Identidade visual',
-          detail: 'Logo, cores, tipografia e um manual curto para o time usar sem errar.',
-        },
+        { name: 'Landing pages', detail: 'Páginas focadas em converter.' },
+        { name: 'Sites institucionais', detail: 'Sua empresa apresentada com clareza.' },
+        { name: 'Lojas virtuais', detail: 'Catálogo, carrinho, checkout e integrações.' },
+        { name: 'Identidade visual', detail: 'Logo, cores, tipografia e direção de marca.' },
         {
           name: 'Design de produto',
-          detail: 'Fluxo, telas e protótipo navegável validados antes de virar código.',
+          detail: 'Fluxos, interfaces e protótipos prontos para desenvolvimento.',
         },
       ],
       cta: 'Entrar em contato',
@@ -111,39 +92,24 @@ export const services = {
       accent: 'cool',
       icon: 'shuffle',
       label: 'Automação',
-      headline: 'Seu WhatsApp respondendo, qualificando e vendendo sem você por perto.',
-      bullets: [
-        { icon: 'bolt', lead: 'Atendimento', rest: 'que responde em segundos, 24 horas' },
-        { icon: 'sparkle', lead: 'Agente de IA', rest: 'treinado no seu negócio e no seu tom' },
-        { icon: 'cube', lead: 'Integração', rest: 'com CRM, ERP e o que você já usa' },
-      ],
+      headline: 'Seu WhatsApp respondendo, qualificando e vendendo por você.',
       services: [
-        {
-          name: 'Atendimento automático',
-          detail:
-            'As perguntas que mais se repetem já saem respondidas, a qualquer hora do dia.',
-        },
+        { name: 'Atendimento automático', detail: 'Respostas instantâneas, 24 horas por dia.' },
         {
           name: 'Agente de IA',
-          detail:
-            'Lê o que o cliente escreveu, responde no seu tom e chama uma pessoa quando trava.',
+          detail: 'Entende a conversa, responde no seu tom e chama alguém quando precisa.',
         },
         {
-          name: 'Qualificação de lead',
-          detail:
-            'A conversa faz as perguntas certas e entrega o contato pronto para o vendedor.',
+          name: 'Qualificação de leads',
+          detail: 'Faz as perguntas certas e encaminha cada contato para o próximo passo.',
         },
         {
-          name: 'Disparo em massa',
-          detail: 'Campanhas e avisos pela API oficial do WhatsApp, sem risco de bloqueio.',
+          name: 'Campanhas e follow-up',
+          detail: 'Disparos, lembretes, cobranças e reativação de clientes.',
         },
         {
-          name: 'Integração com seus sistemas',
-          detail: 'O que acontece na conversa cai sozinho no CRM, no ERP ou na planilha.',
-        },
-        {
-          name: 'Follow-up automático',
-          detail: 'Carrinho abandonado, lembrete de consulta, cobrança e pesquisa pós-venda.',
+          name: 'Integrações',
+          detail: 'Conecta WhatsApp com CRM, ERP, planilhas e outras ferramentas.',
         },
       ],
       cta: 'Entrar em contato',
