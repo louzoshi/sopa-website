@@ -27,7 +27,7 @@ export function HeroStory({ ref }: { ref: Ref<HTMLDivElement> }) {
       {hero.story.paragraphs.map((text, i) => (
         <p
           key={text}
-          className={`mb-[6vh] font-serif text-[clamp(17px,2.2vw,21px)] leading-[1.6] text-ink opacity-0 will-change-[opacity] ${
+          className={`mb-[2.5vh] font-reading text-[clamp(17px,2.2vw,21px)] leading-[1.6] text-ink opacity-0 will-change-[opacity] ${
             i === 0
               ? 'first-letter:float-left first-letter:pt-1.5 first-letter:pr-2.5 first-letter:text-[3.4em] first-letter:leading-[0.8] first-letter:text-ink-bright'
               : ''

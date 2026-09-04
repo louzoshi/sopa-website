@@ -31,7 +31,7 @@ export function Hero() {
       <div className="sticky top-0 flex h-screen items-center justify-center bg-frame">
         <div className="h-full w-full px-[calc(var(--p,0)*64px)] py-[calc(var(--p,0)*56px)]">
           <section className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-[calc(var(--p,0)*40px)] bg-linear-[180deg,var(--color-hero-top)_0%,var(--color-hero-mid)_42%,var(--color-hero-bot)_78%] px-[6vw] py-[6vh]">
-            <div className="absolute left-[26px] top-[22px] z-2 hidden text-[11px] uppercase leading-[1.8] tracking-[0.08em] text-ink/30 sm:block">
+            <div className="absolute left-[26px] top-[22px] z-2 hidden font-mono text-[11px] uppercase leading-[1.8] tracking-[0.08em] text-ink/30 sm:block">
               {hero.corner.map((line) => (
                 <div key={line}>{line}</div>
               ))}
@@ -52,7 +52,7 @@ export function Hero() {
             >
               <div className="mx-auto mb-10 size-[46px] border-2 border-white/20 [clip-path:polygon(25%_0,75%_0,100%_50%,75%_100%,25%_100%,0_50%)]" />
 
-              <h1 className="mb-[34px] font-serif text-[clamp(38px,7vw,88px)] font-normal leading-[1.02] tracking-[-0.01em] text-ink-bright">
+              <h1 className="mb-[34px] font-display text-[clamp(38px,7vw,88px)] font-medium leading-[1.02] tracking-[-0.01em] text-ink-bright">
                 {hero.title.map((line) => (
                   <span key={line} className="block">
                     {line}

@@ -3,6 +3,14 @@
    CLAUDE.md), injetando CSS morto no build. Aqui só o código é varrido. */
 @import "tailwindcss" source(none);
 
+/* Fontes servidas pelo próprio domínio (Fontsource) — sem CDN de terceiro.
+   Cada família traz um @font-face por subset com `unicode-range`, então o
+   navegador baixa só o latino: os outros ficam no dist sem nunca ser pedidos. */
+@import "@fontsource-variable/bricolage-grotesque/wght.css";
+@import "@fontsource-variable/geist/wght.css";
+@import "@fontsource/instrument-serif/latin-400.css";
+@import "@fontsource/instrument-serif/latin-400-italic.css";
+
 @source "../index.html";
 @source "../src";
 
@@ -28,7 +36,15 @@
   --color-stroke-glow: rgba(225, 222, 218, 0.75);
 
   --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-  --font-serif: Georgia, "Times New Roman", serif;
+  /* títulos de seção e o H1 do hero */
+  --font-display: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  /* título e palavra gigante do rodapé */
+  --font-serif: "Instrument Serif", Georgia, "Times New Roman", serif;
+  /* narrativa do hero: serifa de texto, não de display — é o único bloco
+     longo do site e precisa aguentar leitura corrida em corpo pequeno */
+  --font-reading: Georgia, "Times New Roman", serif;
+  /* corpo, botões e rótulos */
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
   /* pulso lento da cópia que "acende" a palavra do footer */
   --animate-breathe: breathe 7s ease-in-out infinite;
@@ -53,7 +69,7 @@
     margin: 0;
     background-color: var(--color-frame);
     color: var(--color-ink);
-    font-family: var(--font-mono);
+    font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
   }
 }

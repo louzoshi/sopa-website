@@ -21,8 +21,10 @@ export function Footer() {
 
       <div className="relative z-2 max-w-[820px] text-center">
         <h2 className="mb-7 font-serif text-[clamp(30px,5vw,58px)] font-normal leading-[1.05] text-ink-bright">
-          {footer.title.map((line) => (
-            <span key={line} className="block">
+          {/* a segunda linha em itálico: o serifado do rodapé é o único lugar
+              do site com esse contraste */}
+          {footer.title.map((line, i) => (
+            <span key={line} className={`block ${i === 1 ? 'italic' : ''}`}>
               {line}
             </span>
           ))}
