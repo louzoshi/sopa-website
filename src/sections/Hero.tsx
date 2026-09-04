@@ -64,7 +64,15 @@ export function Hero() {
                 ))}
               </h1>
 
-              <div className="flex flex-wrap justify-center gap-3">
+              {/*
+                Empilhados no celular, lado a lado a partir de `sm`.
+                A moldura do card cresce com o scroll e come largura; lado a
+                lado, os dois botões cabiam no começo e deixavam de caber por
+                volta de 9% do track — o segundo pulava de linha num frame só,
+                e quebra de linha é a única coisa aqui que não dá para animar.
+                Empilhado, não há o que reordenar.
+              */}
+              <div className="flex flex-col items-center gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
                 <SpecularButton
                   href={whatsappUrl}
                   target="_blank"
