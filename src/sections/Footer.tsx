@@ -14,13 +14,13 @@ export function Footer() {
   return (
     <footer
       id="contato"
-      className="relative flex min-h-[80vh] flex-col items-center justify-start overflow-hidden bg-frame px-[6vw] pb-8 pt-[12vh]"
+      className="relative flex min-h-viewport flex-col items-center overflow-hidden bg-frame px-[6vw] pb-12 pt-[16vh]"
     >
       <Wordmark />
       <LightBeam className="bottom-[-6%] h-[70%]" />
 
       <div className="relative z-2 max-w-[820px] text-center">
-        <h2 className="mb-7 font-serif text-[clamp(30px,5vw,58px)] font-normal leading-[1.05] text-ink-bright">
+        <h2 className="mb-8 font-serif text-[clamp(30px,5vw,58px)] font-normal leading-[1.05] text-ink-bright">
           {/* a segunda linha em itálico: o serifado do rodapé é o único lugar
               do site com esse contraste */}
           {footer.title.map((line, i) => (
@@ -30,7 +30,7 @@ export function Footer() {
           ))}
         </h2>
 
-        <p className="mb-7 text-[15px] leading-relaxed text-ink/50">
+        <p className="mb-9 text-[15px] leading-relaxed text-ink/50">
           {footer.lede.map((line) => (
             <span key={line} className="block">
               {line}
@@ -49,7 +49,9 @@ export function Footer() {
         </SpecularButton>
       </div>
 
-      <div className="absolute inset-x-0 bottom-[22px] z-3 flex flex-wrap justify-center gap-x-7 gap-y-2 px-6 text-[11px] uppercase tracking-[0.1em] text-ink/40">
+      {/* No fluxo, empurrada para baixo pelo `mt-auto` — não mais ancorada em
+          `absolute`, que a fazia passar por cima do botão em tela baixa. */}
+      <div className="relative z-3 mt-auto flex flex-wrap justify-center gap-x-7 gap-y-2 pt-24 text-[11px] uppercase tracking-[0.1em] text-ink/40">
         {footer.links.map((link) => {
           const external = link.href.startsWith('http')
 

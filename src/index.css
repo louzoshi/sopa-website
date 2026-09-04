@@ -92,6 +92,13 @@
   height: 100dvh;
 }
 
+/* Mesma medida, como piso: a seção ocupa a tela inteira e cresce se o conteúdo
+   pedir. É o que faz o rodapé fechar a página como uma cena, não como sobra. */
+@utility min-h-viewport {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
 /* Véu escuro atrás de um bloco de texto, para ele aguentar o feixe de luz
    passando por trás sem perder contraste.
 
