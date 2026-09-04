@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react'
 
 import { Icon } from '../components/Icon'
+import { SpecularButton } from '../components/SpecularButton'
 import { HeroStory } from '../components/hero/HeroStory'
 import { LightBeam } from '../components/hero/LightBeam'
 import { ShapesField } from '../components/hero/ShapesField'
@@ -58,15 +59,15 @@ export function Hero() {
               </h1>
 
               <div className="flex flex-wrap justify-center gap-3">
-                <a
+                <SpecularButton
                   href={whatsappUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-surface-raised px-5 py-3 text-sm text-ink transition-colors hover:border-white/25"
+                  className="rounded-xl border border-white/10 bg-surface-raised px-5 py-3 text-sm text-ink hover:border-white/25"
                 >
                   <Icon name="whatsapp" className="size-4" />
                   {hero.actions.primary}
-                </a>
+                </SpecularButton>
                 <a
                   href="#servicos"
                   className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-transparent px-5 py-3 text-sm text-ink transition-colors hover:border-white/25"

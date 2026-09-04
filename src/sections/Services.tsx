@@ -2,6 +2,7 @@ import { useState, type CSSProperties } from 'react'
 
 import { Icon, type IconName } from '../components/Icon'
 import { SectionHeading } from '../components/SectionHeading'
+import { SpecularButton } from '../components/SpecularButton'
 import { IntegrationGrid } from '../components/services/IntegrationGrid'
 import { WorkGrid } from '../components/services/WorkGrid'
 import { services, whatsappUrl } from '../data/content'
@@ -134,15 +135,16 @@ function ServiceCard({ card }: { card: Card }) {
           </div>
         </div>
 
-        <a
+        <SpecularButton
           href={whatsappUrl}
           target="_blank"
           rel="noreferrer"
-          className="mt-8 inline-flex w-fit items-center gap-2 rounded-lg border border-white/8 bg-white/4 px-4 py-2.5 text-[13px] text-ink/80 transition-colors hover:border-white/20 hover:text-ink"
+          radius={8}
+          className="mt-8 w-fit rounded-lg border border-white/8 bg-white/4 px-4 py-2.5 text-[13px] text-ink/80 hover:border-white/20 hover:text-ink"
         >
           {card.ctaIcon && <Icon name={card.ctaIcon} className="size-4" />}
           {card.cta}
-        </a>
+        </SpecularButton>
       </div>
 
       <div className="mx-3 mb-3 overflow-hidden rounded-xl border border-white/6 bg-card-panel">

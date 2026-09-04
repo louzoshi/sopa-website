@@ -1,6 +1,7 @@
 import type { Ref } from 'react'
 
 import { Icon } from '../Icon'
+import { SpecularButton } from '../SpecularButton'
 import { hero } from '../../data/content'
 
 /**
@@ -27,15 +28,15 @@ export function HeroStory({ ref }: { ref: Ref<HTMLDivElement> }) {
       </p>
 
       <div className="text-center opacity-0">
-        <a
+        <SpecularButton
           href={hero.story.cta.href}
           target="_blank"
           rel="noreferrer"
-          className="inline-flex cursor-pointer items-center gap-2 rounded-xl border border-white/10 bg-surface-raised px-6 py-[13px] text-[15px] text-ink transition-colors hover:border-white/25"
+          className="rounded-xl border border-white/10 bg-surface-raised px-6 py-[13px] text-[15px] text-ink hover:border-white/25"
         >
           <Icon name="whatsapp" className="size-[17px]" />
           {hero.story.cta.label}
-        </a>
+        </SpecularButton>
       </div>
     </div>
   )
