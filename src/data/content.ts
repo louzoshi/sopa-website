@@ -133,19 +133,35 @@ export const services = {
   ],
   /**
    * Integrações do card de Automação: ferramentas que o cliente reconhece e já
-   * usa, não a stack de quem constrói. Três por fileira — as pontas de cada
-   * fileira sangram para fora do painel, sugerindo que a lista não acaba aqui.
+   * usa, não a stack de quem constrói. Agrupadas por função — por onde a
+   * conversa entra, onde a venda é registrada e o que roda a operação. Cada
+   * grupo é uma fileira, e a largura dos tiles se divide entre os itens dele.
    */
-  integrations: [
-    { monogram: 'WA', label: 'whatsapp' },
-    { monogram: 'IG', label: 'instagram' },
-    { monogram: 'RD', label: 'rd station' },
-    { monogram: 'HS', label: 'hubspot' },
-    { monogram: 'PD', label: 'pipedrive' },
-    { monogram: 'BL', label: 'bling' },
-    { monogram: 'OM', label: 'omie' },
-    { monogram: 'GS', label: 'planilhas' },
-    { monogram: 'GC', label: 'agenda' },
+  integrationGroups: [
+    {
+      title: 'Canais',
+      items: [
+        { monogram: 'WA', label: 'WhatsApp' },
+        { monogram: 'IG', label: 'Instagram' },
+      ],
+    },
+    {
+      title: 'Vendas e CRM',
+      items: [
+        { monogram: 'HS', label: 'HubSpot' },
+        { monogram: 'PD', label: 'Pipedrive' },
+        { monogram: 'RD', label: 'RD Station' },
+      ],
+    },
+    {
+      title: 'Operação',
+      items: [
+        { monogram: 'BL', label: 'Bling' },
+        { monogram: 'OM', label: 'Omie' },
+        { monogram: 'GS', label: 'Planilhas' },
+        { monogram: 'GC', label: 'Agenda' },
+      ],
+    },
   ],
 } as const
 

@@ -92,12 +92,6 @@
   height: 100dvh;
 }
 
-/* Grade que sangra nas laterais: as colunas das pontas somem em fade. */
-@utility mask-fade-x {
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent);
-}
-
 /* Véu escuro atrás de um bloco de texto, para ele aguentar o feixe de luz
    passando por trás sem perder contraste.
 
