@@ -59,10 +59,12 @@ export const hero = {
   knockout: 'Agency',
   actions: {
     primary: 'Entre em contato',
-    secondary: '⇥ Ver trabalhos',
+    secondary: 'Trabalhos no ar',
   },
   /** Uma linha por item — hoje é uma só, logo abaixo dos botões. */
   subtitle: ['Criação e Tecnologia'],
+  /** Dica no pé do hero: some junto com o resto do bloco inicial. */
+  scrollHint: 'Arraste para cima',
   /**
    * Texto que atravessa o card enquanto o hero fica preso na viewport.
    * Cada parágrafo é um bloco que acende sozinho ao passar pelo centro da

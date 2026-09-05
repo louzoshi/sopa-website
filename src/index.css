@@ -62,6 +62,19 @@
     }
   }
 
+  /* fio pontilhado da dica de scroll, subindo — o mesmo sentido do gesto que
+     o texto pede, e do conteúdo que vem de baixo */
+  --animate-dot-drift: dot-drift 1.8s linear infinite;
+
+  @keyframes dot-drift {
+    from {
+      background-position: center 7px;
+    }
+    to {
+      background-position: center 0;
+    }
+  }
+
   /* pulso lento da cópia que "acende" a palavra do footer */
   --animate-breathe: breathe 7s ease-in-out infinite;
 
@@ -181,6 +194,19 @@
   }
 }
 
+/* Fio de pontos na vertical, subindo devagar — a direção é a dica. Herda a cor
+   de quem o usa, então basta um `text-*` para calibrar. */
+@utility line-dots {
+  background-image: radial-gradient(circle at center, currentColor 1px, transparent 1.2px);
+  background-size: 3px 7px;
+  background-repeat: repeat-y;
+  animation: dot-drift 1.8s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+}
+
 /* Hachura diagonal dos tiles vazios da grade de stack. */
 @utility bg-hatch {
   background-image: repeating-linear-gradient(
@@ -194,14 +220,14 @@
 @utility mask-shapes-field {
   -webkit-mask-image: radial-gradient(
     closest-side,
-    rgba(0, 0, 0, 0.85),
-    rgba(0, 0, 0, 0.45) 42%,
-    transparent 70%
+    rgba(0, 0, 0, 0.95),
+    rgba(0, 0, 0, 0.6) 42%,
+    transparent 72%
   );
   mask-image: radial-gradient(
     closest-side,
-    rgba(0, 0, 0, 0.85),
-    rgba(0, 0, 0, 0.45) 42%,
-    transparent 70%
+    rgba(0, 0, 0, 0.95),
+    rgba(0, 0, 0, 0.6) 42%,
+    transparent 72%
   );
 }

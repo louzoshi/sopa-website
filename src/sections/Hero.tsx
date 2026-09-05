@@ -58,9 +58,7 @@ export function Hero() {
                 } as CSSProperties
               }
             >
-              <div className="mx-auto mb-10 size-[46px] border-2 border-white/20 [clip-path:polygon(25%_0,75%_0,100%_50%,75%_100%,25%_100%,0_50%)]" />
-
-              <h1 className="relative mb-[34px] font-display text-[clamp(38px,7vw,88px)] font-medium leading-[1.02] tracking-[-0.01em] text-ink-bright">
+              <h1 className="relative mb-[34px] font-display text-[clamp(44px,7.6vw,100px)] font-medium leading-[1.02] tracking-[-0.01em] text-ink-bright">
                 {hero.title.map((line) => (
                   <span
                     key={line}
@@ -112,6 +110,20 @@ export function Hero() {
                   <ScrambleText key={line} text={line} className="block" />
                 ))}
               </p>
+            </div>
+
+            {/* Dica de scroll: herda o `--hc` do track, então some no mesmo
+                ritmo do bloco inicial — quando a pessoa já rolou, ela não
+                precisa mais ser convidada a rolar. */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 bottom-[5vh] z-2 flex flex-col items-center gap-4"
+              style={{ opacity: 'var(--hc, 1)' } as CSSProperties}
+            >
+              <span className="font-mono text-[10px] uppercase tracking-[0.24em] text-ink/40">
+                {hero.scrollHint}
+              </span>
+              <span className="line-dots block h-14 w-[3px] text-ink/30" />
             </div>
 
             <HeroStory ref={storyRef} />

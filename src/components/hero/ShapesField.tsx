@@ -2,7 +2,9 @@ import { useEffect, useRef } from 'react'
 
 /**
  * Campo de formas: hexágonos concêntricos em wireframe, desenhados em canvas 2D
- * com uma rotação lentíssima. O fade das bordas vem da máscara radial no CSS.
+ * com uma rotação lentíssima — anéis alternam o sentido do giro, o que faz o
+ * conjunto respirar sem nunca repetir o mesmo desenho. O fade das bordas vem da
+ * máscara radial no CSS.
  */
 export function ShapesField() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -55,17 +57,8 @@ export function ShapesField() {
         const r = radius * (i / rings)
         const rot = t * 0.04 * (i % 2 ? 1 : -1) + i * 0.15
         ctx.lineWidth = 1 * dpr
-        ctx.strokeStyle = `rgba(253,252,252,${0.05 + 0.02 * (1 - i / rings)})`
+        ctx.strokeStyle = `rgba(253,252,252,${0.1 + 0.035 * (1 - i / rings)})`
         hexagon(r, rot)
-        ctx.stroke()
-      }
-      // raios ligando o centro aos vértices do anel externo
-      ctx.strokeStyle = 'rgba(253,252,252,0.035)'
-      for (let i = 0; i < 6; i++) {
-        const a = t * 0.04 + (i * Math.PI) / 3
-        ctx.beginPath()
-        ctx.moveTo(cx, cy)
-        ctx.lineTo(cx + Math.cos(a) * radius, cy + Math.sin(a) * radius)
         ctx.stroke()
       }
       raf = requestAnimationFrame(frame)

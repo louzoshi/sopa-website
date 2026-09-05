@@ -75,13 +75,14 @@ export function useHeroScroll() {
       track.style.setProperty('--p', closeCurrent.toFixed(4))
 
       // 2) conteúdo inicial some
+      const fade = 1 - clamp((progress - CONTENT_FADE.start) / CONTENT_FADE.length, 0, 1)
+      // no track, e não no bloco: assim a dica de scroll lá embaixo herda o
+      // mesmo valor e some junto, sem precisar de uma segunda conta
+      track.style.setProperty('--hc', fade.toFixed(3))
+
       const content = contentRef.current
-      if (content) {
-        const fade = 1 - clamp((progress - CONTENT_FADE.start) / CONTENT_FADE.length, 0, 1)
-        content.style.setProperty('--hc', fade.toFixed(3))
-        // depois de sumir, para de interceptar cliques nos botões
-        content.style.pointerEvents = fade < 0.02 ? 'none' : ''
-      }
+      // depois de sumir, para de interceptar cliques nos botões
+      if (content) content.style.pointerEvents = fade < 0.02 ? 'none' : ''
 
       // 3) texto atravessa o card
       const story = storyRef.current
