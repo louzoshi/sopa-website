@@ -60,7 +60,7 @@ export function Hero() {
             >
               <div className="mx-auto mb-10 size-[46px] border-2 border-white/20 [clip-path:polygon(25%_0,75%_0,100%_50%,75%_100%,25%_100%,0_50%)]" />
 
-              <h1 className="mb-[34px] font-display text-[clamp(38px,7vw,88px)] font-medium leading-[1.02] tracking-[-0.01em] text-ink-bright">
+              <h1 className="relative mb-[34px] font-display text-[clamp(38px,7vw,88px)] font-medium leading-[1.02] tracking-[-0.01em] text-ink-bright">
                 {hero.title.map((line) => (
                   <span
                     key={line}
@@ -69,6 +69,13 @@ export function Hero() {
                     {line}
                   </span>
                 ))}
+
+                {/* Uma camada de luz por linha, cada uma acendendo só a sua:
+                    a de baixo entra com atraso, então o facho varre "Sopa" e
+                    depois "Agency", e vem mais fraca, senão o branco sobre o
+                    vinho escuro chamaria mais atenção que a linha de cima. */}
+                <ShineLayer lit={0} />
+                <ShineLayer lit={1} delay="0.8s" className="opacity-40" />
               </h1>
 
               {/*
@@ -112,5 +119,31 @@ export function Hero() {
         </div>
       </div>
     </div>
+  )
+}
+
+/**
+ * Cópia do título sobreposta, servindo de máscara para o facho de luz — só a
+ * linha `lit` acende, as outras entram como espaço em branco.
+ *
+ * O espaço mantém a altura da linha sem pôr desenho nenhum na máscara, e é por
+ * isso que a camada continua do tamanho do bloco inteiro: o degradê é medido
+ * pela caixa, então todas as camadas herdam o mesmo ângulo e o mesmo trajeto.
+ * Recortar a camada em volta de uma linha só faria cada luz recomeçar dentro
+ * da própria caixa, e elas deixariam de parecer a mesma.
+ */
+function ShineLayer({ lit, delay, className = '' }: { lit: number; delay?: string; className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`text-shine pointer-events-none absolute inset-0 select-none ${className}`}
+      style={delay ? { animationDelay: delay } : undefined}
+    >
+      {hero.title.map((line, i) => (
+        <span key={line} className="block">
+          {i === lit ? line : '\u00A0'}
+        </span>
+      ))}
+    </span>
   )
 }

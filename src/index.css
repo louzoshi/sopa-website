@@ -50,6 +50,18 @@
   /* corpo, botões e rótulos */
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, -apple-system, sans-serif;
 
+  /* varredura de luz que atravessa o H1 do hero */
+  --animate-shine: shine 9s linear infinite;
+
+  @keyframes shine {
+    from {
+      background-position: 190% 0;
+    }
+    to {
+      background-position: -90% 0;
+    }
+  }
+
   /* pulso lento da cópia que "acende" a palavra do footer */
   --animate-breathe: breathe 7s ease-in-out infinite;
 
@@ -97,6 +109,53 @@
 @utility min-h-viewport {
   min-height: 100vh;
   min-height: 100dvh;
+}
+
+/* Facho de luz atravessando um título — para ser usado numa CÓPIA do texto,
+   sobreposta ao original.
+
+   O texto recorta um degradê que é transparente nas pontas e branco no meio
+   (`background-clip: text`), então a cópia só pinta onde o facho está passando
+   e deixa ver o texto de verdade por baixo no resto do tempo. Como é uma
+   camada só cobrindo o bloco inteiro, o facho é UM, com uma inclinação só,
+   cruzando todas as linhas no mesmo instante — aplicado linha a linha, cada
+   uma ganhava a sua luz, com o ângulo recomeçando dentro de cada caixa.
+
+   A cor original fica onde está: quem está por baixo é o próprio título, então
+   nada apaga, nada muda de tom, e com movimento reduzido a cópia some.
+
+   O facho é estreito e tem franja quente de um lado e fria do outro. Sobre a
+   letra clara, branco em cima de quase-branco não teria para onde subir — quem
+   se vê é a cor passando, não o brilho. É a mesma aberração cromática que o
+   shader do feixe faz logo atrás, então a luz que atravessa as letras é lida
+   como sendo a de lá.
+
+   Cada linha do título recebe a sua camada, sempre do tamanho do bloco inteiro:
+   é o que mantém a inclinação e o trajeto iguais entre elas. O que muda de uma
+   para a outra é o atraso — daí a luz varrer uma e depois a outra — e a
+   opacidade, porque o mesmo branco que quase não aparece sobre letra clara
+   salta sobre letra escura e roubaria a cena. */
+@utility text-shine {
+  background-image: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0) 43%,
+    rgba(255, 188, 130, 0.5) 47.5%,
+    rgba(255, 255, 255, 0.95) 50%,
+    rgba(150, 200, 255, 0.5) 52.5%,
+    rgba(255, 255, 255, 0) 57%
+  );
+  background-size: 280% 100%;
+  background-position: 190% 0;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 9s linear infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    background-image: none;
+    animation: none;
+  }
 }
 
 /* Véu escuro atrás de um bloco de texto, para ele aguentar o feixe de luz
