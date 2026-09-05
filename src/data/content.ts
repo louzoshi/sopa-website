@@ -18,6 +18,34 @@ export const whatsappUrl = `https://wa.me/${contact.whatsapp}?text=${encodeURICo
   contact.message,
 )}`
 
+/**
+ * Menu do canto superior direito. Os `href` apontam para os `id` das seções —
+ * mexer num, mexer no outro.
+ */
+export const nav = {
+  open: 'Abrir menu',
+  close: 'Fechar menu',
+  links: [
+    { label: 'Início', href: '#topo' },
+    { label: 'Serviços', href: '#servicos' },
+    { label: 'Perguntas frequentes', href: '#faq' },
+    { label: 'Contato', href: '#contato' },
+  ],
+  cta: { label: 'Entre em contato', href: whatsappUrl },
+  /**
+   * Controles que só existem dentro do menu. Ainda são maquete: estão aqui
+   * para ver como ficam, e seguem `disabled` até haver o que ligar neles —
+   * um idioma inglês escrito e uma paleta clara desenhada.
+   */
+  settings: {
+    languages: [
+      { code: 'pt', label: 'PT' },
+      { code: 'en', label: 'EN' },
+    ],
+    theme: { dark: 'Escuro', light: 'Claro' },
+  },
+} as const
+
 export const hero = {
   corner: [
     '// flywheel',

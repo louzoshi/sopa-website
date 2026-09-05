@@ -35,7 +35,7 @@ export function Hero() {
   const { trackRef, contentRef, storyRef } = useHeroScroll()
 
   return (
-    <div ref={trackRef} className="relative isolate h-[500vh] bg-frame">
+    <div ref={trackRef} id="topo" className="relative isolate h-[500vh] bg-frame">
       <div className="sticky top-0 flex h-viewport items-center justify-center bg-frame">
         <div className="h-full w-full px-[calc(var(--p,0)*16px)] py-[calc(var(--p,0)*20px)] md:px-[calc(var(--p,0)*64px)] md:py-[calc(var(--p,0)*56px)]">
           <section className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-[calc(var(--p,0)*22px)] bg-linear-[180deg,var(--color-hero-top)_0%,var(--color-hero-mid)_42%,var(--color-hero-bot)_78%] px-5 py-[6vh] md:rounded-[calc(var(--p,0)*40px)] md:px-[6vw]">
