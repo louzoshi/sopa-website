@@ -163,7 +163,10 @@ export const services = {
   ],
   /**
    * Integrações do card de Automação: ferramentas que o cliente reconhece e já
-   * usa, não a stack de quem constrói. Agrupadas por função — por onde a
+   * usa, não a stack de quem constrói. `brand` é o desenho da marca; quem ainda
+   * não tem cai no monograma, e o `tint` dá cor a ele — sem cor, monograma no
+   * meio de logo colorido lê como peça faltando. A cor é da paleta do site, de
+   * propósito: não é a da marca e não deve fingir que é. Agrupadas por função — por onde a
    * conversa entra, onde a venda é registrada e o que roda a operação. Cada
    * grupo é uma fileira, e a largura dos tiles se divide entre os itens dele.
    */
@@ -171,25 +174,25 @@ export const services = {
     {
       title: 'Canais',
       items: [
-        { monogram: 'WA', label: 'WhatsApp' },
-        { monogram: 'IG', label: 'Instagram' },
+        { monogram: 'WA', label: 'WhatsApp', brand: 'whatsapp' },
+        { monogram: 'IG', label: 'Instagram', brand: 'instagram' },
       ],
     },
     {
       title: 'Vendas e CRM',
       items: [
-        { monogram: 'HS', label: 'HubSpot' },
-        { monogram: 'PD', label: 'Pipedrive' },
-        { monogram: 'RD', label: 'RD Station' },
+        { monogram: 'HS', label: 'HubSpot', brand: 'hubspot' },
+        { monogram: 'PD', label: 'Pipedrive', tint: 'mint' },
+        { monogram: 'RD', label: 'RD Station', tint: 'warm' },
       ],
     },
     {
       title: 'Operação',
       items: [
-        { monogram: 'BL', label: 'Bling' },
-        { monogram: 'OM', label: 'Omie' },
-        { monogram: 'GS', label: 'Planilhas' },
-        { monogram: 'GC', label: 'Agenda' },
+        { monogram: 'BL', label: 'Bling', tint: 'cool' },
+        { monogram: 'OM', label: 'Omie', tint: 'mint' },
+        { monogram: 'GS', label: 'Planilhas', brand: 'googlesheets' },
+        { monogram: 'GC', label: 'Agenda', brand: 'googlecalendar' },
       ],
     },
   ],
